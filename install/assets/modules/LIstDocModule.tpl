@@ -227,13 +227,17 @@ $rowTpl .= '
 <div class="context-menu" id="[+id+]context-menu" style="display:none;z-index:99">
     <ul>
 	<li class="parentname">[[DocInfo? &docid=`[+parent+]` &field=`pagetitle`]]</li>
-      <li><a target="main" href="index.php?a=3&id=[+parent+]&tab=1"><i class="fa fa-list fa-fw"></i>  '.$_lang["view_child_resources_in_container"].'</a></li>';	
+    <li><a target="main" href="index.php?a=3&id=[+parent+]&tab=1"><i class="fa fa-list fa-fw"></i>'.$_lang["view_child_resources_in_container"].'</a></li>';	
 if($modx->hasPermission('edit_document')) {	
-$rowTpl .= '<li><a target="main" href="index.php?a=27&id=[+parent+]"><i class="fa fa-pencil-square-o fa-fw"></i>  ' . $_lang["edit_resource"] . '</a></li>
-			<li><a target="main" href="index.php?a=4&pid=[+parent+]"><i class="fa fa-file-o fa-fw"></i>  ' . $_lang["create_resource_here"] . '</a></li> 
-			<li><a target="main" href="index.php?a=72&pid=[+parent+]"><i class="fa fa-link fa-fw"></i>  ' . $_lang["create_weblink_here"] . '</a></li>';
+$rowTpl .='<li><a target="main" href="index.php?a=27&id=[+parent+]"><i class="fa fa-pencil-square-o fa-fw"></i>  ' . $_lang["edit_resource"] . '</a></li>
+		<li><a target="main" href="index.php?a=4&pid=[+parent+]"><i class="fa fa-file-o fa-fw"></i>  ' . $_lang["create_resource_here"] . '</a></li> 
+		<li><a target="main" href="index.php?a=72&pid=[+parent+]"><i class="fa fa-link fa-fw"></i>  ' . $_lang["create_weblink_here"] . '</a></li>';
 }
-$rowTpl .= '<li><a href="[(site_url)]index.php?id=[+parent+]" target="_blank" title="' . $_lang["preview_resource"] . '"><i class="fa fa-eye""></i>  '.$_lang["preview_resource"].'</a></li></td></ul></div>';
+$rowTpl .= '<li><a href="[(site_url)]index.php?id=[+parent+]" target="_blank" title="' . $_lang["preview_resource"] . '">
+		<i class="fa fa-eye""></i>  ' . $_lang["preview_resource"] . ' </a></li>
+		</ul>
+</div>
+</td>';
 }
 //TVs columns		
 $rowTpl .= $TvTDs;
@@ -391,9 +395,19 @@ $params['userFields'] = 'createdby,publishedby,editedby';
 
 // run DocLister
 $list = $modx->runSnippet('DocLister', $params);
-$output = '
+
+//out module
+$output ='';
+
+$output .= ''.$jsOutput.'';
+					
+// onManagerMainFrameHeaderHTMLBlock
+$evtOut = $modx->invokeEvent('OnManagerMainFrameHeaderHTMLBlock');
+$onManagerMainFrameHeaderHTMLBlock = is_array($evtOut) ? implode("\n", $evtOut) : '';
+$output .= $onManagerMainFrameHeaderHTMLBlock;
+																	 
+$output .= '
 '.$cssOutput.'
-'.$jsOutput.'
 <style>
 .footable {font-size:1em}
 .footable .text-small  {font-size:0.84em}
