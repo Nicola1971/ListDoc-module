@@ -5,6 +5,7 @@ A small Documents grid/list module for **Evolution CMS 1.4** based on DocLister
 
 Requires snippets: DocLister, DocInfo, If, PhpThumb.
 
+![module](https://user-images.githubusercontent.com/7342798/33998465-d63bf4ce-e0e7-11e7-9ce9-79f59edd2fc0.png)
 
 
 ## Features:
