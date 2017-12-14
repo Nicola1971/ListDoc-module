@@ -39,7 +39,7 @@ Includes **Tree2ListDocConnect plugin** to connect a resource from the treemenu 
 * **Hide Folders**: addWhereList isfolder=0
 * **Show Deleted and Unpublished**: showNoPublish
 
-### Widget & Grid Settings
+### Module Settings
 
 * **Show Create Resource Buttons**: Show header Create Resource Buttons buttons (parent id from parents parameter)
 * **Show Status Filter**: Show published/unpublished/deleted dropdown select filter (require Show Deleted and Unpublished - ```YES```)
