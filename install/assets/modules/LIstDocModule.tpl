@@ -18,9 +18,9 @@ if(!defined('MODX_BASE_PATH')){die('What are you doing? Get out of here!');}
 global $modx,$_lang;
 //get custom language
 $_LDlang = array();
-include(MODX_BASE_PATH.'assets/modules/dashboarddoclist/lang/english.php');
-if (file_exists(MODX_BASE_PATH.'assets/modules/dashboarddoclist/lang/' . $modx->config['manager_language'] . '.php')) {
-    include(MODX_BASE_PATH.'assets/modules/dashboarddoclist/lang/' . $modx->config['manager_language'] . '.php');
+include(MODX_BASE_PATH.'assets/modules/listdoc/lang/english.php');
+if (file_exists(MODX_BASE_PATH.'assets/modules/listdoc/lang/' . $modx->config['manager_language'] . '.php')) {
+    include(MODX_BASE_PATH.'assets/modules/listdoc/lang/' . $modx->config['manager_language'] . '.php');
 }
 //config button
 $module_id = (!empty($_REQUEST["id"])) ? (int)$_REQUEST["id"] : $yourModuleId;
@@ -31,8 +31,8 @@ $manager_theme = $modx->config['manager_theme'];
 $jsOutput = '
 
 <script src="media/script/jquery/jquery.min.js"></script>
-<script src="../assets/modules/dashboarddoclist/js/moment.min.js"></script>
-<script src="../assets/modules/dashboarddoclist/js/footable.min.js"></script>
+<script src="../assets/modules/listdoc/js/moment.min.js"></script>
+<script src="../assets/modules/listdoc/js/footable.min.js"></script>
 <script>
     var mouseX;
     var mouseY;
@@ -140,16 +140,15 @@ $("div#DashboardList").fadeIn();
 </script>';
 if($manager_theme == "EvoFLAT") {
 $cssOutput = '
-<link type="text/css" rel="stylesheet" href="../assets/plugins/dashboarddoclist/css/footable.evo.min.css">
-<link type="text/css" rel="stylesheet" href="../assets/plugins/dashboarddoclist/css/list_flat.css">
-<link type="text/css" rel="stylesheet" href="media/style/' . $modx->config['manager_theme'] . '/style.css">';
+<link type="text/css" rel="stylesheet" href="media/style/' . $modx->config['manager_theme'] . '/style.css">
+<link type="text/css" rel="stylesheet" href="../assets/modules/listdoc/css/footable.evo.min.css">
+<link type="text/css" rel="stylesheet" href="../assets/modules/listdoc/css/list_flat.css">';
 }
 else {
 $cssOutput = '
 <link type="text/css" rel="stylesheet" href="media/style/' . $modx->config['manager_theme'] . '/style.css">
-<link type="text/css" rel="stylesheet" href="../assets/plugins/dashboarddoclist/css/footable.evo.min.css">
-<link type="text/css" rel="stylesheet" href="../assets/plugins/dashboarddoclist/css/list.css">';
-
+<link type="text/css" rel="stylesheet" href="../assets/modules/listdoc/css/footable.evo.min.css">
+<link type="text/css" rel="stylesheet" href="../assets/modules/listdoc/css/list.css">';
 }
 
 //output
@@ -299,7 +298,7 @@ $rowTpl .= '[[if? &is=`[+deleted+]:=:0` &then=`[[if? &is=`[+published+]:=:1` &th
 <a target="main" href="index.php?a=61&id=[+id+]" class="hidden-xs-down confirm" onClick="window.location.reload();" title="' . $_lang["publish_resource"] . '"><i class="fa fa-arrow-up"></i></a>  
 `]]
 `&else=`
-<span style="opacity:0; margin-right:-6px;" class="hidden-xs-down text-muted" title="publish"><i class="fa fa-arrow-up"></i></span>  
+<span style="opacity:0;" class="hidden-xs-down text-muted" title="publish"><i class="fa fa-arrow-up"></i></span>  
 `]]
 ';
 }

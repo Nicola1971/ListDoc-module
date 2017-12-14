@@ -15,6 +15,8 @@ span.footable-toggle {display:inline-block;width:20px;cursor:pointer;}
     display: none;
 }
 */
+/* module with default theme */
+div.buttonConfig {top: 15px!important;}
 
 /*widget styles*/
 .btn-group .panel-setting:hover {
@@ -26,7 +28,7 @@ span.footable-toggle {display:inline-block;width:20px;cursor:pointer;}
   color: #fff;
   border-color:#1377c5; 
 }
-#DashboardList td.actions .fa {margin-left:6px;}
+#DashboardList td.actions .fa {margin-left:3px;}
 #DashboardList td a.unpublished {color:#B68282;font-style: italic}
 #DashboardList td a.deleted {color:#A52A2A;text-decoration: line-through}
 #DashboardList td a.deleted:hover {color:#A52A2A;text-decoration: line-through}
