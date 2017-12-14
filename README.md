@@ -1,4 +1,5 @@
 # ListDoc Module 
+Module version of [DashboardListDoc-widget](https://github.com/Nicola1971/DashboardListDoc-widget)
 
 A small Documents grid/list module for **Evolution CMS 1.4** based on DocLister
 
