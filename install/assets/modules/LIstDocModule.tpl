@@ -4,11 +4,11 @@
  * Documents list/grid
  *
  * @category	module
- * @version     2.0.1
+ * @version     2.0.3
  * @author      Author: Nicola Lambathakis http://www.tattoocms.it/
  * @icon        fa fa-pencil
  * @internal	@modx_category Manager
- * @internal    @properties &modTitle= Module Title:;string;Documents List  &modicon=Module title icon:;string;fa-pencil &ParentFolder=Parent folder for List documents:;string;0 &ListItems=Max items in List:;string;100 &dittolevel=Depht:;string;3 &hideFolders=Hide Folders:;menu;yes,no;no &showUnpublished=Show Deleted and Unpublished:;menu;yes,no;yes;;Show Deleted and Unpublished resources &showAddButtons=Show Create Resource Buttons:;menu;yes,no;no;;show header add buttons &showStatusFilter=Show Status Filter:;menu;yes,no;yes;;require Show Deleted and Unpublished - YES &DisplayTitle=Display Title in title column:;menu;pagetitle,longtitle,menutitle;pagetitle;;choose which title display in title column &showParent=Show Parent Column:;menu;yes,no;yes &showUser=Show User Column:;menu;createdby,publishedby,editedby,no;createdby &showDate=Show Date Column:;menu;createdon,publishedon,editedon,no;editedon &dateFormat=Date Column Format:;menu;DD MM YYYY,MM DD YYYY,YYYY MM DD;DD MM YYYY &TvColumn=Tv Columns:;string;[+longtitle+],[+menuindex+] &TvSortType=Tv Column Sort type:;string;text,number &ImageTv=Show Image TV:;string;image;;enter tv name &ShowImageIn=Show image Tv in:;menu;overview,column;overview &tablefields=Overview Tv Fields:;string;[+longtitle+],[+description+],[+introtext+],[+documentTags+] &tableheading=Overview TV headings:;string;Long Title,Description,Introtext,Tags &editInModal=Edit docs in modal:;menu;yes,no;no;;edit and create resources in evo modal window &showMoveButton=Show Move Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showAddHere=Show Create Resource here Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showPublishButton=Show Publish Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showDeleteButton=Show Delete Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions
+ * @internal    @properties &modTitle= Module Title:;string;Documents List  &modicon=Module title icon:;string;fa-pencil &ParentFolder=Parent folder for List documents:;string;0 &ListItems=Max items in List:;string;100 &dittolevel=Depht:;string;3 &hideFolders=Hide Folders:;menu;yes,no;no &showUnpublished=Show Deleted and Unpublished:;menu;yes,no;yes;;Show Deleted and Unpublished resources &showAddButtons=Show Create Resource Buttons:;menu;yes,no;no;;show header add buttons &showStatusFilter=Show Status Filter:;menu;yes,no;yes;;require Show Deleted and Unpublished - YES &DisplayTitle=Display Title in title column:;menu;pagetitle,longtitle,menutitle;pagetitle;;choose which title display in title column &showParent=Show Parent Column:;menu;yes,no;yes &showUser=Show User Column:;menu;createdby,publishedby,editedby,no;createdby &showDate=Show Date Column:;menu;createdon,publishedon,editedon,no;editedon &dateFormat=Date Column Format:;menu;DD MM YYYY,MM DD YYYY,YYYY MM DD;DD MM YYYY &TvColumn=Tv Columns:;string;[+longtitle+],[+menuindex+] &TvSortType=Tv Column Sort type:;string;text,number &ImageTv=Show Image TV:;string;image;;enter tv name &ShowImageIn=Show image Tv in:;menu;overview,column;overview &tablefields=Overview Tv Fields:;string;[+longtitle+],[+description+],[+introtext+],[+documentTags+] &tableheading=Overview TV headings:;string;Long Title,Description,Introtext,Tags &editInModal=Edit docs in modal:;menu;yes,no;no;;edit and create resources in evo modal window &showMoveButton=Show Move Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showAddHere=Show Create Resource here Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showDuplicateButton=Show Duplicate Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showPublishButton=Show Publish Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showDeleteButton=Show Delete Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions
  * @license 	http://www.gnu.org/copyleft/gpl.html GNU Public License (GPL)
  */
 
@@ -227,17 +227,14 @@ $rowTpl .= '
 <div class="context-menu" id="[+id+]context-menu" style="display:none;z-index:99">
     <ul>
 	<li class="parentname">[[DocInfo? &docid=`[+parent+]` &field=`pagetitle`]]</li>
-    <li><a target="main" href="index.php?a=3&id=[+parent+]&tab=1"><i class="fa fa-list fa-fw"></i>'.$_lang["view_child_resources_in_container"].'</a></li>';	
+      <li><a target="main" href="index.php?a=3&id=[+parent+]&tab=1"><i class="fa fa-list fa-fw"></i>  '.$_lang["view_child_resources_in_container"].'</a></li>';	
 if($modx->hasPermission('edit_document')) {	
-$rowTpl .='<li><a target="main" href="index.php?a=27&id=[+parent+]"><i class="fa fa-pencil-square-o fa-fw"></i>  ' . $_lang["edit_resource"] . '</a></li>
-		<li><a target="main" href="index.php?a=4&pid=[+parent+]"><i class="fa fa-file-o fa-fw"></i>  ' . $_lang["create_resource_here"] . '</a></li> 
-		<li><a target="main" href="index.php?a=72&pid=[+parent+]"><i class="fa fa-link fa-fw"></i>  ' . $_lang["create_weblink_here"] . '</a></li>';
+$rowTpl .= '<li><a target="main" href="index.php?a=27&id=[+parent+]"><i class="fa fa-pencil-square-o fa-fw"></i>  ' . $_lang["edit_resource"] . '</a></li>
+			<li><a target="main" href="index.php?a=4&pid=[+parent+]"><i class="fa fa-file-o fa-fw"></i>  ' . $_lang["create_resource_here"] . '</a></li> 
+			<li><a target="main" href="index.php?a=72&pid=[+parent+]"><i class="fa fa-link fa-fw"></i>  ' . $_lang["create_weblink_here"] . '</a></li>
+	        <li><a target="main" href="index.php?a=56&id=[+parent+]"><i class="fa fa-sort-numeric-asc fa-fw"></i>  ' . $_lang["sort_menuindex"] . '</a></li>';
 }
-$rowTpl .= '<li><a href="[(site_url)]index.php?id=[+parent+]" target="_blank" title="' . $_lang["preview_resource"] . '">
-		<i class="fa fa-eye""></i>  ' . $_lang["preview_resource"] . ' </a></li>
-		</ul>
-</div>
-</td>';
+$rowTpl .= '<li><a href="[(site_url)]index.php?id=[+parent+]" target="_blank" title="' . $_lang["preview_resource"] . '"><i class="fa fa-eye""></i>  '.$_lang["preview_resource"].'</a></li></td></ul></div>';
 }
 //TVs columns		
 $rowTpl .= $TvTDs;
@@ -293,7 +290,11 @@ if($modx->hasPermission('edit_document')) {
 if ($showMoveButton == yes) { 
 $rowTpl .= '<a class="hidden-xs-down" target="main" href="index.php?a=51&id=[+id+]" title="' . $_lang["move_resource"] . '"><i class="fa fa-arrows"></i></a> ';
 }
-	
+
+//Duplicate btn
+if ($showDuplicateButton == yes) { 
+$rowTpl .= '<a target="main" class="hidden-xs-down" href="index.php?a=94&id=[+id+]"  onClick="window.location.reload();" title="' . $_lang["resource_duplicate"] . '"><i class="fa fa-clone"></i></a> ';
+}	
 //Publish btn	
 if ($showPublishButton == yes) { 
 $rowTpl .= '[[if? &is=`[+deleted+]:=:0` &then=`[[if? &is=`[+published+]:=:1` &then=` 
