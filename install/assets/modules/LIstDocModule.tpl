@@ -4,18 +4,18 @@
  * Documents list/grid
  *
  * @category	module
- * @version     2.0.3
+ * @version     2.0.4
  * @author      Author: Nicola Lambathakis http://www.tattoocms.it/
  * @icon        fa fa-pencil
  * @internal	@modx_category Manager
- * @internal    @properties &modTitle= Module Title:;string;Documents List  &modicon=Module title icon:;string;fa-pencil &ParentFolder=Parent folder for List documents:;string;0 &ListItems=Max items in List:;string;100 &dittolevel=Depht:;string;3 &hideFolders=Hide Folders:;menu;yes,no;no &showUnpublished=Show Deleted and Unpublished:;menu;yes,no;yes;;Show Deleted and Unpublished resources &showAddButtons=Show Create Resource Buttons:;menu;yes,no;no;;show header add buttons &showStatusFilter=Show Status Filter:;menu;yes,no;yes;;require Show Deleted and Unpublished - YES &DisplayTitle=Display Title in title column:;menu;pagetitle,longtitle,menutitle;pagetitle;;choose which title display in title column &showParent=Show Parent Column:;menu;yes,no;yes &showUser=Show User Column:;menu;createdby,publishedby,editedby,no;createdby &showDate=Show Date Column:;menu;createdon,publishedon,editedon,no;editedon &dateFormat=Date Column Format:;menu;DD MM YYYY,MM DD YYYY,YYYY MM DD;DD MM YYYY &TvColumn=Tv Columns:;string;[+longtitle+],[+menuindex+] &TvSortType=Tv Column Sort type:;string;text,number &ImageTv=Show Image TV:;string;image;;enter tv name &ShowImageIn=Show image Tv in:;menu;overview,column;overview &tablefields=Overview Tv Fields:;string;[+longtitle+],[+description+],[+introtext+],[+documentTags+] &tableheading=Overview TV headings:;string;Long Title,Description,Introtext,Tags &editInModal=Edit docs in modal:;menu;yes,no;no;;edit and create resources in evo modal window &showMoveButton=Show Move Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showAddHere=Show Create Resource here Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showDuplicateButton=Show Duplicate Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showPublishButton=Show Publish Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showDeleteButton=Show Delete Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions
+ * @internal    @properties &modTitle= Module Title:;string;Documents List  &modicon=Module title icon:;string;fa-pencil &ParentFolder=Parent folder for List documents:;string;0 &ListItems=Max items in List:;string;100 &dittolevel=Depht:;string;3 &hideFolders=Hide Folders:;menu;yes,no;no &showUnpublished=Show Deleted and Unpublished:;menu;yes,no;yes;;Show Deleted and Unpublished resources &showAddButtons=Show Create Resource Buttons:;menu;yes,no;no;;show header add buttons &showStatusFilter=Show Status Filter:;menu;yes,no;yes;;require Show Deleted and Unpublished - YES &DisplayTitle=Display Title in title column:;menu;pagetitle,longtitle,menutitle;pagetitle;;choose which title display in title column &showParent=Show Parent Column:;menu;yes,no;yes &showUser=Show User Column:;menu;createdby,publishedby,editedby,no;createdby &showDate=Show Date Column:;menu;createdon,publishedon,editedon,no;editedon &dateFormat=Date Column Format:;menu;DD MM YYYY,MM DD YYYY,YYYY MM DD;DD MM YYYY &TvColumn=Tv Columns:;string;[+longtitle+],[+menuindex+] &TvSortType=Tv Column Sort type:;string;text,number &ImageTv=Show Image TV:;string;image;;enter tv name &ShowImageIn=Show image Tv in:;menu;overview,column;overview &tablefields=Overview Tv Fields:;string;[+longtitle+],[+description+],[+introtext+],[+documentTags+] &tableheading=Overview TV headings:;string;Long Title,Description,Introtext,Tags &editInModal=Edit docs in modal:;menu;yes,no;no;;edit and create resources in evo modal window &showMoveButton=Show Move Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showAddHere=Show Create Resource here Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showDuplicateButton=Show Duplicate Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showPublishButton=Show Publish Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showDeleteButton=Show Delete Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showEmptyTrashButton=Show Empty Trash Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions
  * @license 	http://www.gnu.org/copyleft/gpl.html GNU Public License (GPL)
  */
 
 if(!defined('MODX_BASE_PATH')){die('What are you doing? Get out of here!');}
 //lang
 // get global language
-global $modx,$_lang;
+global $modx,$_lang,$_style;
 //get custom language
 $_LDlang = array();
 include(MODX_BASE_PATH.'assets/modules/listdoc/lang/english.php');
@@ -63,31 +63,31 @@ $jsOutput .= 'FooTable.MyFiltering = FooTable.Filtering.extend({
 	$create: function(){
 		this._super();
 		var self = this,
-			$form_grp = $(\'<div/>\', {\'class\': \'form-group\'})
-				.append($(\'<label/>\', {\'class\': \'sr-only\', text: \'Status\'}))
+			$form_grp = $("<div/>", {"class": "form-group"})
+				.append($("<label/>", {"class": "sr-only", text: "Status"}))
 				.prependTo(self.$form);
-		self.$status = $(\'<select/>\', { \'class\': \'form-control\' })
-			.on(\'change\', {self: self}, self._onStatusDropdownChanged)
-			.append($(\'<option/>\', {text: self.def}))
+		self.$status = $("<select/>", { "class": "form-control" })
+			.on("change", {self: self}, self._onStatusDropdownChanged)
+			.append($("<option/>", {text: self.def}))
 			.appendTo($form_grp);
 
 		$.each(self.statuses, function(i, status){
-			self.$status.append($(\'<option/>\').text(status));
+			self.$status.append($("<option/>").text(status));
 		});
 	},
 	_onStatusDropdownChanged: function(e){
 		var self = e.data.self,
 			selected = $(this).val();
 		if (selected !== self.def){
-			self.addFilter(\'status\', selected, [\'status\'], false, false, true);
+			self.addFilter("status", selected, ["status"], false, false, true);
 		} else {
-			self.removeFilter(\'status\');
+			self.removeFilter("status");
 		}
 		self.filter();
 	},
 	draw: function(){
 		this._super();
-		var status = this.find(\'status\');
+		var status = this.find("status");
 		if (status instanceof FooTable.Filter){
 			this.$status.val(status.query.val());
 		} else {
@@ -95,12 +95,12 @@ $jsOutput .= 'FooTable.MyFiltering = FooTable.Filtering.extend({
 		}
 	}
 });
-FooTable.components.register(\'filtering\', FooTable.MyFiltering);';
+FooTable.components.register("filtering", FooTable.MyFiltering);';
 }
 }
 $jsOutput .= '
 jQuery(document).ready(function($){
-		$(\'#TableList'.$pluginid.'\').footable({
+		$("#TableList").footable({
 			"paging": {
 				"enabled": true,
 				"countFormat": "{CP} ' . $_LDlang["of"] . ' {TP} ' . $_LDlang["pages"] . ' - ' . $_LDlang["total_rows"] . ': {TR}"
@@ -115,25 +115,80 @@ jQuery(document).ready(function($){
 		  filtering: FooTable.MyFiltering
 	        }
 		});
-$(\'[data-page-size]\').on(\'click\', function(e){
+$("[data-page-size]").on("click", function(e){
 	e.preventDefault();
-	var newSize = $(this).data(\'pageSize\');
-	FooTable.get(\'#TableList\').pageSize(newSize);
+	var newSize = $(this).data("pageSize");
+	FooTable.get("#TableList").pageSize(newSize);
 });
  var ActiveID;
-    var activeSizeButton = localStorage.getItem(\'DashboardList'.$pluginid.'_active_btn\');
+    var activeSizeButton = localStorage.getItem("DashboardList'.$pluginid.'_active_btn");
     if (activeSizeButton) {
         ActiveID = activeSizeButton;
-        $(ActiveID).addClass(\'active\');
+        $(ActiveID).addClass("active");
     }
-$(\'button.btn-size\').each(function(){
+$("button.btn-size").each(function(){
     $(this).click(function(){
-        $(this).siblings().removeClass(\'active\'); 
-        $(this).toggleClass(\'active\');
-        localStorage.setItem(\'DashboardList'.$pluginid.'_active_btn\', \'#\' + $(this).attr(\'id\'));
-        $(this).addClass(\'active\');
+        $(this).siblings().removeClass("active"); 
+        $(this).toggleClass("active");
+        localStorage.setItem("DashboardList'.$pluginid.'_active_btn", "#" + $(this).attr("id"));
+        $(this).addClass("active");
     });
 });
+$("#TableList").on("click", ".btn-delete", function(){
+   trID = $(this).closest("tr").attr("id");
+        r = confirm("' . $_lang["delete_resource"] . ' ID:"+trID+" - ' . $_lang["confirm_delete_resource"] . '");
+        if(r) {
+          	  alert(trID+" ' . $_LDlang["deleted"] . '");
+              window.location.reload();
+            }
+  });
+$("#TableList").on("click", ".btn-undelete", function(){
+   trID = $(this).closest("tr").attr("id");
+        r = confirm("' . $_lang["undelete_resource"] . ' ID:"+trID+" - ' . $_lang["confirm_undelete"] . '");
+        if(r) {
+          	  alert(trID+" ' . $_lang["undeleted"] . '");
+              window.location.reload();
+            }
+  });
+$("#TableList").on("click", ".btn-unpublish", function(){
+   trID = $(this).closest("tr").attr("id");
+        r = confirm("' . $_lang["unpublish_resource"] . ' ID:"+trID+" - ' . $_lang["confirm_unpublish"] . '");
+        if(r) {
+          	  //alert(trID+" ' . $_LDlang["unpublished"] . '");
+              window.location.reload();
+            }
+  });
+$("#TableList").on("click", ".btn-publish", function(){
+   trID = $(this).closest("tr").attr("id");
+        r = confirm("' . $_lang["publish_resource"] . ' ID:"+trID+" - ' . $_lang["confirm_publish"] . '");
+        if(r) {
+          	  //alert(trID+" ' . $_LDlang["published"] . '");
+              window.location.reload();
+            }
+  });
+$("#TableList").on("click", ".btn-duplicate", function(){
+   trID = $(this).closest("tr").attr("id");
+        r = confirm("' . $_lang["resource_duplicate"] . ' ID:"+trID+" - ' . $_lang["confirm_duplicate_record"] . '");
+        if(r) {
+          	  //alert(trID+" ' . $_lang["duplicated"] . '");
+              window.location.reload();
+            }
+  });
+
+
+if($("#treeMenu_emptytrash", window.parent.document).hasClass("disabled")){}
+else {
+$("#emptyTrash").removeClass("btn-secondary disabled");
+$("#emptyTrash").addClass("btn-danger");
+}
+$("#purgeTrash").on("click", ".btn-emptytrash", function(){
+        r = confirm("' . $_lang["confirm_empty_trash"] . '");
+        if(r) {
+          	  if (confirm("' . $_lang["are_you_sure"] . '") ) {
+                parent.location.reload();
+        		}              
+            }
+  });
 $("div#DashboardList").fadeIn();
 });
 
@@ -206,7 +261,7 @@ $DLdate = str_replace($find,$replace,$dateFormat);
 		
 ////////////Columns
 //ID column	
-$rowTpl = '@CODE: <tr>
+$rowTpl = '@CODE: <tr id="[+id+]">
 <td aria-expanded="false" class="footable-toggle"> <span class="label label-info">[+id+]</span></td> ';
 		
 //Image column	
@@ -293,14 +348,14 @@ $rowTpl .= '<a class="hidden-xs-down" target="main" href="index.php?a=51&id=[+id
 
 //Duplicate btn
 if ($showDuplicateButton == yes) { 
-$rowTpl .= '<a target="main" class="hidden-xs-down" href="index.php?a=94&id=[+id+]"  onClick="window.location.reload();" title="' . $_lang["resource_duplicate"] . '"><i class="fa fa-clone"></i></a> ';
+$rowTpl .= '<a target="main" class="btn-duplicate hidden-xs-down" href="index.php?a=94&id=[+id+]"  title="' . $_lang["resource_duplicate"] . '"><i class="fa fa-clone"></i></a> ';
 }	
 //Publish btn	
 if ($showPublishButton == yes) { 
 $rowTpl .= '[[if? &is=`[+deleted+]:=:0` &then=`[[if? &is=`[+published+]:=:1` &then=` 
-<a target="main" href="index.php?a=62&id=[+id+]" class="hidden-xs-down confirm" onClick="window.location.reload();" title="' . $_lang["unpublish_resource"] . '"><i class="fa fa-arrow-down"></i></a>  
+<a class="btn-unpublish hidden-xs-down" target="main" href="index.php?a=62&id=[+id+]" title="' . $_lang["unpublish_resource"] . '"><i class="fa fa-arrow-down"></i></a>  
 `&else=`
-<a target="main" href="index.php?a=61&id=[+id+]" class="hidden-xs-down confirm" onClick="window.location.reload();" title="' . $_lang["publish_resource"] . '"><i class="fa fa-arrow-up"></i></a>  
+<a class="btn-publish hidden-xs-down" target="main" href="index.php?a=61&id=[+id+]" title="' . $_lang["publish_resource"] . '"><i class="fa fa-arrow-up"></i></a>  
 `]]
 `&else=`
 <span style="opacity:0;" class="hidden-xs-down text-muted" title="publish"><i class="fa fa-arrow-up"></i></span>  
@@ -321,9 +376,9 @@ $rowTpl .= '<a class="hidden-xs-down" target="main" href="index.php?a=4&pid=[+id
 if ($showDeleteButton == yes) { 
 if($modx->hasPermission('delete_document')) {
 $rowTpl .= '[[if? &is=`[+deleted+]:=:0` &then=` 
-<a target="main" href="index.php?a=6&id=[+id+]" title="' . $_lang["delete_resource"] . '"  onClick="window.location.reload();"><i class="fa fa-trash"></i></a>  
+<a class="btn-delete" href="index.php?a=6&id=[+id+]" target="main"  title="' . $_lang["delete_resource"] . '""><i class="fa fa-trash"></i></a>  
 `&else=`
-<a target="main" href="index.php?a=63&id=[+id+]" title="' . $_lang["undelete_resource"] . '"  onClick="window.location.reload();"><i class="fa fa-arrow-circle-o-up"></i></a>  
+<a class="btn-undelete" target="main" href="index.php?a=63&id=[+id+]" title="' . $_lang["undelete_resource"] . '"><i class="fa fa-arrow-circle-o-up"></i></a>  
 `]]';
 }
 }
@@ -435,7 +490,7 @@ $output .= '
 </div>
 <div class="tab-page">
 <div style="display:none;" id="DashboardList" class="table-responsive">
-				<table data-state="true" data-state-key="ListDocMod_state" data-paging-size="10" data-show-toggle="false" data-toggle-column="last" data-toggle-selector=".footable-toggle" data-filter-ignore-case="true" data-filtering="true" data-state-filtering="true" data-filter-exact-match="false" data-filter-dropdown-title="'.$_lang["search_criteria"].'" data-filter-placeholder="'.$_lang["element_filter_msg"].'" data-filter-position="right" class="table data" id="TableList'.$pluginid.'">
+				<table data-state="true" data-state-key="ListDocMod_state" data-paging-size="10" data-show-toggle="false" data-toggle-column="last" data-toggle-selector=".footable-toggle" data-filter-ignore-case="true" data-filtering="true" data-state-filtering="true" data-filter-exact-match="false" data-filter-dropdown-title="'.$_lang["search_criteria"].'" data-filter-placeholder="'.$_lang["element_filter_msg"].'" data-filter-position="right" class="table data" id="TableList">
                 <thead>
 <div style="position:absolute;top:75px;left:25px;z-index:10;" class="hidden-xs-down">
 <button type="button" class="btn btn-sm btn-success btn-refresh" onClick="window.location.reload();" title="' . $_LDlang["update"] . '"><i class="fa fa-refresh" aria-hidden="true"></i></button>
@@ -463,6 +518,16 @@ $output .= '
 					</thead>                    <tbody>
 '.$list.' 
 </tbody></table>
-</div></div>';
+</div>';
+if ($showEmptyTrashButton == yes) { 
+if($modx->hasPermission('empty_trash')) {
+$output .= '
+<div id="purgeTrash" style="margin-top:10px;margin-right:30px;" class="pull-right">
+<a id="emptyTrash" target="main" class="btn btn-md btn-emptytrash btn-secondary disabled" href="index.php?a=64" title="' . $_lang["empty_recycle_bin"] . '">'.$_style['empty_recycle_bin_empty'].'</a>
+';
+}
+}
+$output .= '</div>
+</div>';
 
 return $output;
