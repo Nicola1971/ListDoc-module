@@ -760,7 +760,7 @@ $output .= '
 							'.$dateColHead.'
 							'.$userColHead.'						
 							<th data-filterable="false" data-sortable="false" style="width: 1%; text-align:center;">'.$_lang["mgrlog_action"].'</th>
-
+							<th data-filterable="false" data-sortable="false" data-breakpoints="all"></th>
 						</tr>
 					</thead>                    <tbody>
 '.$list.' 
