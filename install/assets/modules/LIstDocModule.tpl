@@ -4,11 +4,11 @@
  * Documents list/grid
  *
  * @category	module
- * @version     2.0.4
+ * @version     2.0.5
  * @author      Author: Nicola Lambathakis http://www.tattoocms.it/
  * @icon        fa fa-pencil
  * @internal	@modx_category Manager
- * @internal    @properties &modTitle= Module Title:;string;Documents List  &modicon=Module title icon:;string;fa-pencil &ParentFolder=Parent folder for List documents:;string;0 &ListItems=Max items in List:;string;100 &dittolevel=Depht:;string;3 &hideFolders=Hide Folders:;menu;yes,no;no &showUnpublished=Show Deleted and Unpublished:;menu;yes,no;yes;;Show Deleted and Unpublished resources &showAddButtons=Show Create Resource Buttons:;menu;yes,no;no;;show header add buttons &showStatusFilter=Show Status Filter:;menu;yes,no;yes;;require Show Deleted and Unpublished - YES &DisplayTitle=Display Title in title column:;menu;pagetitle,longtitle,menutitle;pagetitle;;choose which title display in title column &showParent=Show Parent Column:;menu;yes,no;yes &showUser=Show User Column:;menu;createdby,publishedby,editedby,no;createdby &showDate=Show Date Column:;menu;createdon,publishedon,editedon,no;editedon &dateFormat=Date Column Format:;menu;DD MM YYYY,MM DD YYYY,YYYY MM DD;DD MM YYYY &TvColumn=Tv Columns:;string;[+longtitle+],[+menuindex+] &TvSortType=Tv Column Sort type:;string;text,number &ImageTv=Show Image TV:;string;image;;enter tv name &ShowImageIn=Show image Tv in:;menu;overview,column;overview &tablefields=Overview Tv Fields:;string;[+longtitle+],[+description+],[+introtext+],[+documentTags+] &tableheading=Overview TV headings:;string;Long Title,Description,Introtext,Tags &editInModal=Edit docs in modal:;menu;yes,no;no;;edit and create resources in evo modal window &showMoveButton=Show Move Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showAddHere=Show Create Resource here Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showDuplicateButton=Show Duplicate Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showPublishButton=Show Publish Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showDeleteButton=Show Delete Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showEmptyTrashButton=Show Empty Trash Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions
+ * @internal    @properties &modTitle= Module Title:;string;Documents List  &modicon=Module title icon:;string;fa-pencil &ParentFolder=Parent folder for List documents:;string;0 &ListItems=Max items in List:;string;100 &dittolevel=Depht:;string;3 &hideFolders=Hide Folders:;menu;yes,no;no &showUnpublished=Show Deleted and Unpublished:;menu;yes,no;yes;;Show Deleted and Unpublished resources &showAddButtons=Show Create Resource Buttons:;menu;yes,no;no;;show header add buttons &showStatusFilter=Show Status Filter:;menu;yes,no;yes;;require Show Deleted and Unpublished - YES &DisplayTitle=Display Title in title column:;menu;pagetitle,longtitle,menutitle;pagetitle;;choose which title display in title column &showParent=Show Parent Column:;menu;yes,no;yes &showUser=Show User Column:;menu;createdby,publishedby,editedby,no;createdby &showDate=Show Date Column:;menu;createdon,publishedon,editedon,no;editedon &dateFormat=Date Column Format:;menu;DD MM YYYY,MM DD YYYY,YYYY MM DD;DD MM YYYY &TvColumn=Tv Columns:;string;[+longtitle+],[+menuindex+] &TvSortType=Tv Column Sort type:;string;text,number &ImageTv=Show Image TV:;string;image;;enter tv name &ShowImageIn=Show image Tv in:;menu;overview,column;overview &tablefields=Overview Tv Fields:;string;[+longtitle+],[+description+],[+introtext+],[+documentTags+] &tableheading=Overview TV headings:;string;Long Title,Description,Introtext,Tags &editInModal=Edit docs in modal:;menu;yes,no;no;;edit and create resources in evo modal window &showMoveButton=Show Move Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showAddHere=Show Create Resource here Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showDuplicateButton=Show Duplicate Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showPublishButton=Show Publish Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showDeleteButton=Show Delete Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showEmptyTrashButton=Show Empty Trash Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &confirmTheme=jquery confirm Theme:;menu;modern,light,dark,supervan,material,bootstrap;modern;;theme styles for confim alert windows
  * @license 	http://www.gnu.org/copyleft/gpl.html GNU Public License (GPL)
  */
 
@@ -28,11 +28,17 @@ if($modx->hasPermission('edit_module')) {
 $button_config = '<a title="' . $_lang["settings_config"] . '" href="index.php?a=108&id='.$module_id.'" class="btn btn-sm btn-secondary" ><i class="fa fa-cog"></i> ' . $_lang["settings_config"] . '</a>';
 }
 $manager_theme = $modx->config['manager_theme'];
+$confirmTheme = isset($confirmTheme) ? $confirmTheme : 'modern';
+//clean languages confirms
+$confirm_delete_resource = str_replace(array('\'', '"'), '', $_lang["confirm_delete_resource"]);
+$confirm_publish = str_replace(array('\'', '"'), '', $_lang["confirm_publish"]);
+$confirm_unpublish = str_replace(array('\'', '"'), '', $_lang["confirm_unpublish"]);
 $jsOutput = '
 
 <script src="media/script/jquery/jquery.min.js"></script>
 <script src="../assets/modules/listdoc/js/moment.min.js"></script>
 <script src="../assets/modules/listdoc/js/footable.min.js"></script>
+<script src="../assets/modules/listdoc/js/jquery-confirm.min.js"></script>
 <script>
     var mouseX;
     var mouseY;
@@ -100,6 +106,11 @@ FooTable.components.register("filtering", FooTable.MyFiltering);';
 }
 $jsOutput .= '
 jQuery(document).ready(function($){
+if($("#treeMenu_emptytrash", window.parent.document).hasClass("disabled")){}
+else {
+$("#emptyTrash").removeClass("btn-secondary disabled");
+$("#emptyTrash").addClass("btn-danger");
+}
 		$("#TableList").footable({
 			"paging": {
 				"enabled": true,
@@ -134,61 +145,296 @@ $("button.btn-size").each(function(){
         $(this).addClass("active");
     });
 });
-$("#TableList").on("click", ".btn-delete", function(){
-   trID = $(this).closest("tr").attr("id");
-        r = confirm("' . $_lang["delete_resource"] . ' ID:"+trID+" - ' . $_lang["confirm_delete_resource"] . '");
-        if(r) {
-          	  alert(trID+" ' . $_LDlang["deleted"] . '");
-              window.location.reload();
-            }
-  });
-$("#TableList").on("click", ".btn-undelete", function(){
-   trID = $(this).closest("tr").attr("id");
-        r = confirm("' . $_lang["undelete_resource"] . ' ID:"+trID+" - ' . $_lang["confirm_undelete"] . '");
-        if(r) {
-          	  alert(trID+" ' . $_lang["undeleted"] . '");
-              window.location.reload();
-            }
-  });
-$("#TableList").on("click", ".btn-unpublish", function(){
-   trID = $(this).closest("tr").attr("id");
-        r = confirm("' . $_lang["unpublish_resource"] . ' ID:"+trID+" - ' . $_lang["confirm_unpublish"] . '");
-        if(r) {
-          	  //alert(trID+" ' . $_LDlang["unpublished"] . '");
-              window.location.reload();
-            }
-  });
-$("#TableList").on("click", ".btn-publish", function(){
-   trID = $(this).closest("tr").attr("id");
-        r = confirm("' . $_lang["publish_resource"] . ' ID:"+trID+" - ' . $_lang["confirm_publish"] . '");
-        if(r) {
-          	  //alert(trID+" ' . $_LDlang["published"] . '");
-              window.location.reload();
-            }
-  });
-$("#TableList").on("click", ".btn-duplicate", function(){
-   trID = $(this).closest("tr").attr("id");
-        r = confirm("' . $_lang["resource_duplicate"] . ' ID:"+trID+" - ' . $_lang["confirm_duplicate_record"] . '");
-        if(r) {
-          	  //alert(trID+" ' . $_lang["duplicated"] . '");
-              window.location.reload();
-            }
-  });
 
 
-if($("#treeMenu_emptytrash", window.parent.document).hasClass("disabled")){}
-else {
-$("#emptyTrash").removeClass("btn-secondary disabled");
-$("#emptyTrash").addClass("btn-danger");
-}
-$("#purgeTrash").on("click", ".btn-emptytrash", function(){
-        r = confirm("' . $_lang["confirm_empty_trash"] . '");
-        if(r) {
-          	  if (confirm("' . $_lang["are_you_sure"] . '") ) {
-                parent.location.reload();
-        		}              
+$("#TableList").on("click", ".btn-delete" , function(){
+event.preventDefault();
+event.stopPropagation();
+ trID = $(this).closest("tr").attr("id");
+$.confirm({
+    type: \'red\',
+    theme: \''.$confirmTheme.'\',
+    animateFromElement: false,
+	useBootstrap: false,
+    animation: \'top\',
+    closeAnimation: \'scale\',
+	icon: \'fa fa-question\',
+    title: \'' . $_lang["delete_resource"] . ' \'+trID,
+    content: \'' . $confirm_delete_resource . '\',
+    buttons: {	
+        confirm: {
+        btnClass: \'btn-danger\',
+		text: \'' . $_lang["yes"] . '\',
+		action: function () {
+		    result= true;
+			if(confirm) {
+			var jqxhr = $.post( "index.php?a=6&id="+trID, function() {
+            parent.window.location.reload(true);	
+               })			  
             }
-  });
+			 $.alert({			 
+			 useBootstrap: false,
+			 animateFromElement: false,
+			 type: \'green\',
+    		 animation: \'top\',
+			 theme: \''.$confirmTheme.'\',
+			 icon: \'fa fa-thumbs-o-up\',
+			 title:\'' . $_LDlang["deleted"] . ' \'+trID,
+			 content: \'' . $_lang["actioncomplete"] . '\',
+			 useBootstrap: false,
+    		 animation: \'top\',
+			 });
+			} 
+        },
+        cancel: {
+		btnClass: \'btn-warning\',
+		text: \'' . $_lang["cancel"] . '\',
+		action: function () {
+           //$.alert(\'Canceled!\');
+        }
+		 }
+    }
+});
+});
+
+$("#TableList").on("click", ".btn-undelete" , function(){
+event.preventDefault();
+event.stopPropagation();
+ trID = $(this).closest("tr").attr("id");
+$.confirm({
+    type: \'orange\',
+    theme: \''.$confirmTheme.'\',
+    animateFromElement: false,
+	useBootstrap: false,
+    animation: \'top\',
+    closeAnimation: \'scale\',
+	icon: \'fa fa-question\',
+    title: \'' . $_lang["undelete_resource"] . ' \'+trID,
+    content: \'' . $_lang["confirm_undelete"] . '\',
+    buttons: {	
+        confirm: {
+		btnClass: \'btn-success\',
+		text: \'' . $_lang["yes"] . '\',
+		action: function () {
+		    result= true;
+			if(confirm) {
+			var jqxhr = $.post( "index.php?a=63&id="+trID, function() {
+            parent.window.location.reload(true);	
+               })			  
+            }			
+			 $.alert({			 
+			 useBootstrap: false,
+			 animateFromElement: false,
+			 type: \'green\',
+    		 animation: \'top\',
+			 theme: \''.$confirmTheme.'\',
+			 icon: \'fa fa-thumbs-o-up\',
+			 title:\'' . $_lang["undeleted"] . ' \'+trID,
+			 content: \'' . $_lang["actioncomplete"] . '\',
+			 useBootstrap: false,
+    		 animation: \'top\',
+			 });
+			} 
+        },
+        cancel: {
+		btnClass: \'btn-warning\',
+		text: \'' . $_lang["cancel"] . '\',
+		action: function () {
+           //$.alert(\'Canceled!\');
+        }
+		 }
+    }
+});
+});
+
+$("#TableList").on("click", ".btn-unpublish" , function(){
+event.preventDefault();
+event.stopPropagation();
+ trID = $(this).closest("tr").attr("id");
+$.confirm({
+    type: \'orange\',
+    theme: \''.$confirmTheme.'\',
+    animateFromElement: false,
+	useBootstrap: false,
+    animation: \'top\',
+    closeAnimation: \'scale\',
+	icon: \'fa fa-question\',
+    title: \'' . $_lang["unpublish_resource"] . ' \'+trID,
+    content: \'' . $confirm_unpublish . '\',
+    buttons: {	
+        confirm: {
+		btnClass: \'btn-success\',
+		text: \'' . $_lang["yes"] . '\',
+		action: function () {
+		    result= true;
+			if(confirm) {
+			var jqxhr = $.post( "index.php?a=62&id="+trID, function() {
+			window.location.reload(true);
+               })			  
+            }
+			 $.alert({			 
+			 useBootstrap: false,
+			 animateFromElement: false,
+			 type: \'green\',
+    		 animation: \'top\',
+			 theme: \''.$confirmTheme.'\',
+			 icon: \'fa fa-thumbs-o-up\',
+			 title:\'' . $_lang["unpublish_resource"] . ' \'+trID,
+			 content: \'' . $_lang["actioncomplete"] . '\',
+			 useBootstrap: false,
+    		 animation: \'top\',
+			 });
+			} 
+        },
+        cancel: {
+		btnClass: \'btn-warning\',
+		text: \'' . $_lang["cancel"] . '\',
+		action: function () {
+           //$.alert(\'Canceled!\');
+        }
+		 }
+    }
+});
+});
+
+$("#TableList").on("click", ".btn-publish" , function(){
+event.preventDefault();
+event.stopPropagation();
+ trID = $(this).closest("tr").attr("id");
+$.confirm({
+    type: \'orange\',
+    theme: \''.$confirmTheme.'\',
+    animateFromElement: false,
+	useBootstrap: false,
+    animation: \'top\',
+    closeAnimation: \'scale\',
+	icon: \'fa fa-question\',
+    title: \'' . $_lang["publish_resource"] . ' \'+trID,
+    content: \'' . $confirm_publish . '\',
+    buttons: {	
+        confirm: {
+		btnClass: \'btn-success\',
+		text: \'' . $_lang["yes"] . '\',
+		action: function () {
+		    result= true;
+			if(confirm) {
+			var jqxhr = $.post( "index.php?a=61&id="+trID, function() {
+			window.location.reload(true);
+               })			  
+            }
+			 $.alert({			 
+			 useBootstrap: false,
+			 animateFromElement: false,
+			 type: \'green\',
+    		 animation: \'top\',
+			 theme: \''.$confirmTheme.'\',
+			 icon: \'fa fa-thumbs-o-up\',
+			 title:\'' . $_lang["publish_resource"] . ' \'+trID,
+			 content: \'' . $_lang["actioncomplete"] . '\',
+			 useBootstrap: false,
+    		 animation: \'top\',
+			 });
+			} 
+        },
+        cancel: {
+		btnClass: \'btn-warning\',
+		text: \'' . $_lang["cancel"] . '\',
+		action: function () {
+           //$.alert(\'Canceled!\');
+        }
+		 }
+    }
+});
+});
+$("#TableList").on("click", ".btn-duplicate" , function(event){
+event.preventDefault();
+event.stopPropagation();
+ trID = $(this).closest("tr").attr("id");
+$.confirm({
+    type: \'orange\',
+    theme: \''.$confirmTheme.'\',
+    animateFromElement: false,
+	useBootstrap: false,
+    animation: \'top\',
+    closeAnimation: \'scale\',
+	icon: \'fa fa-question\',
+    title: \'' . $_lang["resource_duplicate"] . ' \'+trID,
+    content: \'' . $_lang["confirm_duplicate_record"] . '\',
+    buttons: {	
+        confirm: {
+		btnClass: \'btn-success\',
+		text: \'' . $_lang["yes"] . '\',
+		action: function () {
+		    result= true;				
+			if(confirm) {
+			var jqxhr = $.post( "index.php?a=94&id="+trID, function() {
+			window.location.reload(true);
+               })
+            }			 
+			 $.alert({			 
+			 useBootstrap: false,
+			 animateFromElement: false,
+			 type: \'green\',
+    		 animation: \'top\',
+			 theme: \''.$confirmTheme.'\',
+			 title:\'' . $_lang["resource_duplicate"] . ' \'+trID,
+			 content: \'' . $_lang["actioncomplete"] . '\',
+			 useBootstrap: false,
+    		 animation: \'top\',
+			 });
+			} 
+        },
+        cancel: {
+		btnClass: \'btn-warning\',
+		text: \'' . $_lang["cancel"] . '\',
+		action: function () {
+           //$.alert(\'Canceled!\');
+        }
+		 }
+    }
+});
+});
+
+$("#emptyTrash").confirm({
+    type: \'red\',
+    theme: \''.$confirmTheme.'\',
+    animateFromElement: false,
+	useBootstrap: false,
+    animation: \'top\',
+    closeAnimation: \'scale\',
+	icon: \'fa fa-warning\',
+    title: \'' . $_lang["empty_recycle_bin"] . '<br/><br/>' . $_lang["are_you_sure"] . '\',
+    content: \'' . $_lang["confirm_empty_trash"] . '\',
+    buttons: {
+        confirm: {
+		btnClass: \'btn-danger\',
+		text: \'' . $_lang["yes"] . '\',
+		action: function () {            
+			result= true;
+			location.href = href="index.php?a=64";
+			 parent.location.reload();	
+			 $.alert({
+			 useBootstrap: false,
+			 type: \'green\',
+    		 animation: \'top\',
+			 theme: \''.$confirmTheme.'\',
+			 title:\'' . $_lang["empty_recycle_bin"] . ' \',
+			 content: \'' . $_lang["actioncomplete"] . '\',
+			 useBootstrap: false,
+    		 animation: \'top\',
+			 });
+			}
+        },
+        cancel: {
+		btnClass: \'btn-info\',
+		text: \'' . $_lang["cancel"] . '\',
+		action: function () {
+           //$.alert(\'Canceled!\');
+        }
+	
+    }
+    }
+});
 $("div#DashboardList").fadeIn();
 });
 
@@ -197,7 +443,8 @@ if($manager_theme == "EvoFLAT") {
 $cssOutput = '
 <link type="text/css" rel="stylesheet" href="media/style/' . $modx->config['manager_theme'] . '/style.css">
 <link type="text/css" rel="stylesheet" href="../assets/modules/listdoc/css/footable.evo.min.css">
-<link type="text/css" rel="stylesheet" href="../assets/modules/listdoc/css/list_flat.css">';
+<link type="text/css" rel="stylesheet" href="../assets/modules/listdoc/css/list_flat.css">
+<link type="text/css" rel="stylesheet" href="../assets/modules/listdoc/css/jquery-confirm.min.css">';
 }
 else {
 $cssOutput = '
@@ -346,9 +593,9 @@ if ($showMoveButton == yes) {
 $rowTpl .= '<a class="hidden-xs-down" target="main" href="index.php?a=51&id=[+id+]" title="' . $_lang["move_resource"] . '"><i class="fa fa-arrows"></i></a> ';
 }
 
-//Duplicate btn
+//Duplicate btn href="index.php?a=94&id=[+id+]" 
 if ($showDuplicateButton == yes) { 
-$rowTpl .= '<a target="main" class="btn-duplicate hidden-xs-down" href="index.php?a=94&id=[+id+]"  title="' . $_lang["resource_duplicate"] . '"><i class="fa fa-clone"></i></a> ';
+$rowTpl .= '<a class="btn-duplicate hidden-xs-down" target="main" href="index.php?a=94&id=[+id+]" title="' . $_lang["resource_duplicate"] . '"><i class="fa fa-clone"></i></a> ';
 }	
 //Publish btn	
 if ($showPublishButton == yes) { 
@@ -376,7 +623,7 @@ $rowTpl .= '<a class="hidden-xs-down" target="main" href="index.php?a=4&pid=[+id
 if ($showDeleteButton == yes) { 
 if($modx->hasPermission('delete_document')) {
 $rowTpl .= '[[if? &is=`[+deleted+]:=:0` &then=` 
-<a class="btn-delete" href="index.php?a=6&id=[+id+]" target="main"  title="' . $_lang["delete_resource"] . '""><i class="fa fa-trash"></i></a>  
+<a class="btn-delete" href="index.php?a=6&id=[+id+]" target="main" onclick="return false;" title="' . $_lang["delete_resource"] . '""><i class="fa fa-trash"></i></a>  
 `&else=`
 <a class="btn-undelete" target="main" href="index.php?a=63&id=[+id+]" title="' . $_lang["undelete_resource"] . '"><i class="fa fa-arrow-circle-o-up"></i></a>  
 `]]';
@@ -513,7 +760,7 @@ $output .= '
 							'.$dateColHead.'
 							'.$userColHead.'						
 							<th data-filterable="false" data-sortable="false" style="width: 1%; text-align:center;">'.$_lang["mgrlog_action"].'</th>
-							<th data-filterable="false" data-sortable="false" data-breakpoints="all"></th>
+
 						</tr>
 					</thead>                    <tbody>
 '.$list.' 
@@ -523,7 +770,7 @@ if ($showEmptyTrashButton == yes) {
 if($modx->hasPermission('empty_trash')) {
 $output .= '
 <div id="purgeTrash" style="margin-top:10px;margin-right:30px;" class="pull-right">
-<a id="emptyTrash" target="main" class="btn btn-md btn-emptytrash btn-secondary disabled" href="index.php?a=64" title="' . $_lang["empty_recycle_bin"] . '">'.$_style['empty_recycle_bin_empty'].'</a>
+<a id="emptyTrash" class="btn btn-md btn-emptytrash btn-secondary disabled" data-title="' . $_lang["empty_recycle_bin"] . '?" href="index.php?a=64" title="' . $_lang["empty_recycle_bin"] . '">'.$_style['empty_recycle_bin_empty'].'</a>
 ';
 }
 }
