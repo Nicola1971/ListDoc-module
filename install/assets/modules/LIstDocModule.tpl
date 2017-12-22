@@ -4,7 +4,7 @@
  * Documents list/grid
  *
  * @category	module
- * @version     2.0.5
+ * @version     2.0.5.2
  * @author      Author: Nicola Lambathakis http://www.tattoocms.it/
  * @icon        fa fa-pencil
  * @internal	@modx_category Manager
@@ -147,7 +147,7 @@ $("button.btn-size").each(function(){
 });
 
 
-$("#TableList").on("click", ".btn-delete" , function(){
+$("#TableList").on("click", ".btn-delete" , function(event){
 event.preventDefault();
 event.stopPropagation();
  trID = $(this).closest("tr").attr("id");
@@ -198,7 +198,7 @@ $.confirm({
 });
 });
 
-$("#TableList").on("click", ".btn-undelete" , function(){
+$("#TableList").on("click", ".btn-undelete" , function(event){
 event.preventDefault();
 event.stopPropagation();
  trID = $(this).closest("tr").attr("id");
@@ -249,7 +249,7 @@ $.confirm({
 });
 });
 
-$("#TableList").on("click", ".btn-unpublish" , function(){
+$("#TableList").on("click", ".btn-unpublish" , function(event){
 event.preventDefault();
 event.stopPropagation();
  trID = $(this).closest("tr").attr("id");
@@ -300,7 +300,7 @@ $.confirm({
 });
 });
 
-$("#TableList").on("click", ".btn-publish" , function(){
+$("#TableList").on("click", ".btn-publish" , function(event){
 event.preventDefault();
 event.stopPropagation();
  trID = $(this).closest("tr").attr("id");
