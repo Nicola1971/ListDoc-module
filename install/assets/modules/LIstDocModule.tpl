@@ -8,7 +8,7 @@
  * @author      Author: Nicola Lambathakis http://www.tattoocms.it/
  * @icon        fa fa-pencil
  * @internal	@modx_category Manager
- * @internal    @properties &modTitle= Module Title:;string;Documents List &modicon=Module title icon:;string;fa-pencil &ParentFolder=Parent folder for List documents:;string;0 &ListItems=Max items in List:;string;100 &dittolevel=Depht:;string;3 &hideFolders=Hide Folders:;menu;yes,no;no &showUnpublished=Show Deleted and Unpublished:;menu;yes,no;yes;;Show Deleted and Unpublished resources &showAddButtons=Show Create Resource Buttons:;menu;yes,no;no;;show header add buttons &showStatusFilter=Show Status Filter:;menu;yes,no;yes;;require Show Deleted and Unpublished - YES &DisplayTitle=Display Title in title column:;menu;pagetitle,longtitle,menutitle;pagetitle;;choose which title display in title column &showParent=Show Parent Column:;menu;yes,no;yes &showUser=Show User Column:;menu;createdby,publishedby,editedby,no;createdby &showDate=Show Date Column:;menu;createdon,publishedon,editedon,no;editedon &dateFormat=Date Column Format:;menu;DD MM YYYY,MM DD YYYY,YYYY MM DD;DD MM YYYY &TvColumn=Tv Columns:;string;[+longtitle+],[+menuindex+] &TvSortType=Tv Column Sort type:;string;text,number &ImageTv=Show Image TV:;string;image;;enter tv name &ShowImageIn=Show image Tv in:;menu;overview,column;overview &tablefields=Overview Tv Fields:;string;[+longtitle+],[+description+],[+introtext+],[+documentTags+] &tableheading=Overview TV headings:;string;Long Title,Description,Introtext,Tags &editInModal=Edit docs in modal:;menu;yes,no;no;;edit and create resources in evo modal window &showMoveButton=Show Move Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showAddHere=Show Create Resource here Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showDuplicateButton=Show Duplicate Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showPublishButton=Show Publish Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showDeleteButton=Show Delete Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showEmptyTrashButton=Show Empty Trash Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &confirmTheme=jquery confirm Theme:;menu;modern,light,dark,supervan,material,bootstrap;modern;;theme styles for confim alert windows
+ * @internal    @properties &modTitle=Module Title:;string;Documents List &modicon=Module title icon:;string;fa-pencil &ParentFolder=Parent folder for List documents:;string;0 &ListItems=Max items in List:;string;100 &dittolevel=Depht:;string;3 &hideFolders=Hide Folders:;menu;yes,no;no &showUnpublished=Show Deleted and Unpublished:;menu;yes,no;yes;;Show Deleted and Unpublished resources &showAddButtons=Show Create Resource Buttons:;menu;yes,no;no;;show header add buttons &showStatusFilter=Show Status Filter:;menu;yes,no;yes;;require Show Deleted and Unpublished YES &DisplayTitle=Display Title in title column:;menu;pagetitle,longtitle,menutitle;pagetitle;;choose which title display in title column &showParent=Show Parent Column:;menu;yes,no;yes &showUser=Show User Column:;menu;createdby,publishedby,editedby,no;createdby &showDate=Show Date Column:;menu;createdon,publishedon,editedon,no;editedon &dateFormat=Date Column Format:;menu;DD MM YYYY,MM DD YYYY,YYYY MM DD;DD MM YYYY &TvColumn=Tv Columns:;string;[+longtitle+],[+menuindex+] &TvSortType=Tv Column Sort type:;string;text,number &ImageTv=Show Image TV:;string;image;;enter image tv name &ShowImageIn=Show image Tv in:;menu;overview,column;overview &tablefields=Overview Tv Fields:;string;[+longtitle+],[+description+],[+introtext+],[+documentTags+] &tableheading=Overview TV headings:;string;Long Title,Description,Introtext,Tags &editInModal=Edit docs in modal:;menu;yes,no;no;;edit and create resources in evo modal window &showMoveButton=Show Move Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showAddHere=Show Create Resource here Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showDuplicateButton=Show Duplicate Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showPublishButton=Show Publish Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showDeleteButton=Show Delete Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showEmptyTrashButton=Show Empty Trash Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &confirmTheme=jquery confirm Theme:;menu;modern,light,dark,supervan,material,bootstrap;modern;;theme styles for confim alert windows
  * @license 	http://www.gnu.org/copyleft/gpl.html GNU Public License (GPL)
  */
 
@@ -43,12 +43,12 @@ $jsOutput = '
     var mouseX;
     var mouseY;
     $(document).mousemove(function(e) {
-       mouseX = e.pageX; 
+       mouseX = e.pageX;
        mouseY = e.pageY;
-    });  
+    });
     $(document).bind("mousedown", function (e) {
     // If the clicked element is not the menu
-    if (!$(e.target).parents(".context-menu").length > 0) {    
+    if (!$(e.target).parents(".context-menu").length > 0) {
         // Hide it
         $(".context-menu").hide(100);
     }
@@ -57,8 +57,8 @@ $jsOutput = '
 <script>
 ';
 
-if ($showUnpublished == yes) { 
-if ($showStatusFilter == yes) { 
+if ($showUnpublished == yes) {
+if ($showStatusFilter == yes) {
 $jsOutput .= 'FooTable.MyFiltering = FooTable.Filtering.extend({
 	construct: function(instance){
 		this._super(instance);
@@ -139,7 +139,7 @@ $("[data-page-size]").on("click", function(e){
     }
 $("button.btn-size").each(function(){
     $(this).click(function(){
-        $(this).siblings().removeClass("active"); 
+        $(this).siblings().removeClass("active");
         $(this).toggleClass("active");
         localStorage.setItem("DashboardList'.$pluginid.'_active_btn", "#" + $(this).attr("id"));
         $(this).addClass("active");
@@ -162,7 +162,7 @@ $.confirm({
 	icon: \'fa fa-question\',
     title: \'' . $_lang["delete_resource"] . ' \'+trID,
     content: \'' . $confirm_delete_resource . '\',
-    buttons: {	
+    buttons: {
         confirm: {
         btnClass: \'btn-danger\',
 		text: \'' . $_lang["yes"] . '\',
@@ -170,10 +170,10 @@ $.confirm({
 		    result= true;
 			if(confirm) {
 			var jqxhr = $.post( "index.php?a=6&id="+trID, function() {
-            parent.window.location.reload(true);	
-               })			  
+            parent.window.location.reload(true);
+               })
             }
-			 $.alert({			 
+			 $.alert({
 			 useBootstrap: false,
 			 animateFromElement: false,
 			 type: \'green\',
@@ -185,7 +185,7 @@ $.confirm({
 			 useBootstrap: false,
     		 animation: \'top\',
 			 });
-			} 
+			}
         },
         cancel: {
 		btnClass: \'btn-warning\',
@@ -213,7 +213,7 @@ $.confirm({
 	icon: \'fa fa-question\',
     title: \'' . $_lang["undelete_resource"] . ' \'+trID,
     content: \'' . $_lang["confirm_undelete"] . '\',
-    buttons: {	
+    buttons: {
         confirm: {
 		btnClass: \'btn-success\',
 		text: \'' . $_lang["yes"] . '\',
@@ -221,10 +221,10 @@ $.confirm({
 		    result= true;
 			if(confirm) {
 			var jqxhr = $.post( "index.php?a=63&id="+trID, function() {
-            parent.window.location.reload(true);	
-               })			  
-            }			
-			 $.alert({			 
+            parent.window.location.reload(true);
+               })
+            }
+			 $.alert({
 			 useBootstrap: false,
 			 animateFromElement: false,
 			 type: \'green\',
@@ -236,7 +236,7 @@ $.confirm({
 			 useBootstrap: false,
     		 animation: \'top\',
 			 });
-			} 
+			}
         },
         cancel: {
 		btnClass: \'btn-warning\',
@@ -264,7 +264,7 @@ $.confirm({
 	icon: \'fa fa-question\',
     title: \'' . $_lang["unpublish_resource"] . ' \'+trID,
     content: \'' . $confirm_unpublish . '\',
-    buttons: {	
+    buttons: {
         confirm: {
 		btnClass: \'btn-success\',
 		text: \'' . $_lang["yes"] . '\',
@@ -273,9 +273,9 @@ $.confirm({
 			if(confirm) {
 			var jqxhr = $.post( "index.php?a=62&id="+trID, function() {
 			window.location.reload(true);
-               })			  
+               })
             }
-			 $.alert({			 
+			 $.alert({
 			 useBootstrap: false,
 			 animateFromElement: false,
 			 type: \'green\',
@@ -287,7 +287,7 @@ $.confirm({
 			 useBootstrap: false,
     		 animation: \'top\',
 			 });
-			} 
+			}
         },
         cancel: {
 		btnClass: \'btn-warning\',
@@ -315,7 +315,7 @@ $.confirm({
 	icon: \'fa fa-question\',
     title: \'' . $_lang["publish_resource"] . ' \'+trID,
     content: \'' . $confirm_publish . '\',
-    buttons: {	
+    buttons: {
         confirm: {
 		btnClass: \'btn-success\',
 		text: \'' . $_lang["yes"] . '\',
@@ -324,9 +324,9 @@ $.confirm({
 			if(confirm) {
 			var jqxhr = $.post( "index.php?a=61&id="+trID, function() {
 			window.location.reload(true);
-               })			  
+               })
             }
-			 $.alert({			 
+			 $.alert({
 			 useBootstrap: false,
 			 animateFromElement: false,
 			 type: \'green\',
@@ -338,7 +338,7 @@ $.confirm({
 			 useBootstrap: false,
     		 animation: \'top\',
 			 });
-			} 
+			}
         },
         cancel: {
 		btnClass: \'btn-warning\',
@@ -365,18 +365,18 @@ $.confirm({
 	icon: \'fa fa-question\',
     title: \'' . $_lang["resource_duplicate"] . ' \'+trID,
     content: \'' . $_lang["confirm_duplicate_record"] . '\',
-    buttons: {	
+    buttons: {
         confirm: {
 		btnClass: \'btn-success\',
 		text: \'' . $_lang["yes"] . '\',
 		action: function () {
-		    result= true;				
+		    result= true;
 			if(confirm) {
 			var jqxhr = $.post( "index.php?a=94&id="+trID, function() {
 			window.location.reload(true);
                })
-            }			 
-			 $.alert({			 
+            }
+			 $.alert({
 			 useBootstrap: false,
 			 animateFromElement: false,
 			 type: \'green\',
@@ -387,7 +387,7 @@ $.confirm({
 			 useBootstrap: false,
     		 animation: \'top\',
 			 });
-			} 
+			}
         },
         cancel: {
 		btnClass: \'btn-warning\',
@@ -415,10 +415,10 @@ $("#emptyTrash").confirm({
         confirm: {
 		btnClass: \'btn-danger\',
 		text: \'' . $_lang["yes"] . '\',
-		action: function () {            
+		action: function () {
 			result= true;
 			location.href = href="index.php?a=64";
-			 parent.location.reload();	
+			 parent.location.reload();
 			 $.alert({
 			 useBootstrap: false,
 			 type: \'green\',
@@ -437,7 +437,7 @@ $("#emptyTrash").confirm({
 		action: function () {
            //$.alert(\'Canceled!\');
         }
-	
+
     }
     }
 });
@@ -464,17 +464,17 @@ $WidgetOutput = isset($WidgetOutput) ? $WidgetOutput : '';
 $TvColumn = isset($TvColumn) ? $TvColumn : '';
 $tablefields = isset($tablefields) ? $tablefields : '[+longtitle+],[+description+],[+introtext+],[+documentTags+]';
 $tableheading = isset($tableheading) ? $tableheading : 'Long Title,Description,Introtext,Tags';
-		
+
 //Header create resource in parent buttons
-if ($showAddButtons == yes) { 
-	if($modx->hasPermission('edit_document')) {	
+if ($showAddButtons == yes) {
+	if($modx->hasPermission('edit_document')) {
 $Parents = explode(",","$ParentFolder");
 foreach ($Parents as $Parent){
 	if ($Parent != '0') {
 	$ParentT = $modx->getPageInfo($Parent,'*','pagetitle');
 	$ParentTitle = $ParentT['pagetitle'];
 	}
-	else {	
+	else {
 	$ParentTitle = "<i class=\"fa fa-sitemap\"></i> Root";}
 	if ($editInModal == yes) {
 	$ParentsButtons .= '<a class="btn btn-sm btn-success" title="' . $_lang["create_resource_here"] . '" style="cursor:pointer" href="" onClick="parent.modx.popup({url:\''. MODX_MANAGER_URL.'?a=4&pid='.$Parent.'\',title1:\'' . $_lang["create_resource_here"] . '\',icon:\'fa-file-o\',iframe:\'iframe\',selector2:\'.tab-page>.container\',position:\'center center\',width:\'80%\',height:\'80%\',wrap:\'body\',hide:0,hover:0,overlay:1,overlayclose:1})">+ <i class="fa fa-file-o fa-fw"></i>  ' . $ParentTitle . '</a> ';
@@ -486,7 +486,7 @@ foreach ($Parents as $Parent){
 	}
 	}
 }
-}		
+}
 //get Tv vars Heading Titles from Module configuration (ie: Page Title,Description,Date)
 $tharr = explode(",","$tableheading");
 $tdarr = explode(",","$tablefields");
@@ -506,118 +506,118 @@ foreach (array_combine($TvColumns, $TvTypes) as $TvTD => $TvType){
 	$TvName = $getTvName;
 	$TvColumnsHeaders .= '<th data-breakpoints="xs" data-type="'.$TvType.'">'.$TvName.'</th> ';
 }
-//get date format 
+//get date format
 $dateFormat = isset($dateFormat) ? $dateFormat : 'DD MM YYYY';
 $find = array('DD','MM','YYYY');
 $replace = array('%d','%m','%Y');
 $DLdate = str_replace($find,$replace,$dateFormat);
-		
+
 ////////////Columns
-//ID column	
+//ID column
 $rowTpl = '@CODE: <tr id="[+id+]">
 <td aria-expanded="false" class="footable-toggle"> <span class="label label-info">[+id+]</span></td> ';
-		
-//Image column	
+
+//Image column
 if ($ImageTv != '') {
 if ($ShowImageIn == column) {
 $rowTpl .= '<td aria-expanded="false" class="footable-toggle" ><img class="footable-toggle img-thumbnail-sm" src="../[[phpthumb? &input=`[+'.$ImageTv.'+]` &options=`w=70,h=70,q=60,zc=C`]]" alt="[+title+]"> </td> ';
 $ImageTVHead = '<th width="100" data-type="html" data-breakpoints="xs" data-filterable="false" data-sortable="false" style="text-align:center"><i class="icon-imagetv fa fa-2x fa-camera" aria-hidden="true"></i></th> ';
 }
 }
-//Title column		
-$rowTpl .= '<td class="footable-toggle"><a target="main" data-title="edit?" class="dataConfirm [[if? &is=`[+published+]:=:0` &then=`unpublished`]] [[if? &is=`[+deleted+]:=:1` &then=`deleted`]] [[if? &is=`[+hidemenu+]:is:1:and:[+published+]:is:1` &then=`notinmenu`]]" href="index.php?a=27&id=[+id+]" title="' . $_lang["edit_resource"] . '">[[if? &is=`[+'.$DisplayTitle.'+]:!empty` &then=`[+'.$DisplayTitle.'+]` &else=[+title+]`]]</a>[[if? &is=`[+type+]:is:reference` &then=` <i class="weblinkicon fa fa-link"></i>`]]</td> ';	
+//Title column
+$rowTpl .= '<td class="footable-toggle"><a target="main" data-title="edit?" class="dataConfirm [[if? &is=`[+published+]:=:0` &then=`unpublished`]] [[if? &is=`[+deleted+]:=:1` &then=`deleted`]] [[if? &is=`[+hidemenu+]:is:1:and:[+published+]:is:1` &then=`notinmenu`]]" href="index.php?a=27&id=[+id+]" title="' . $_lang["edit_resource"] . '">[[if? &is=`[+'.$DisplayTitle.'+]:!empty` &then=`[+'.$DisplayTitle.'+]` &else=[+title+]`]]</a>[[if? &is=`[+type+]:is:reference` &then=` <i class="weblinkicon fa fa-link"></i>`]]</td> ';
 
-//Parent column	and context menu	
+//Parent column	and context menu
 if ($showParent == yes) {
 $rowTpl .= '
-<td aria-expanded="false" [[if? &is=`[+parent+]:not:0`&then=`oncontextmenu ="event.preventDefault();$(\'#[+id+]context-menu\').show();$(\'#context-menu\').offset({\'top\':mouseY,\'left\':mouseX})"`]]> 
+<td aria-expanded="false" [[if? &is=`[+parent+]:not:0`&then=`oncontextmenu ="event.preventDefault();$(\'#[+id+]context-menu\').show();$(\'#context-menu\').offset({\'top\':mouseY,\'left\':mouseX})"`]]>
 [[if? &is=`[+parent+]:not:0`&then=`<a target="main" href="index.php?a=3&id=[+parent+]&tab=1" title="'.$_lang["view_child_resources_in_container"].'">[[DocInfo? &docid=`[+parent+]` &field=`pagetitle`]]</a>`]]
 <div class="context-menu" id="[+id+]context-menu" style="display:none;z-index:99">
     <ul>
 	<li class="parentname">[[DocInfo? &docid=`[+parent+]` &field=`pagetitle`]]</li>
-      <li><a target="main" href="index.php?a=3&id=[+parent+]&tab=1"><i class="fa fa-list fa-fw"></i>  '.$_lang["view_child_resources_in_container"].'</a></li>';	
-if($modx->hasPermission('edit_document')) {	
+      <li><a target="main" href="index.php?a=3&id=[+parent+]&tab=1"><i class="fa fa-list fa-fw"></i>  '.$_lang["view_child_resources_in_container"].'</a></li>';
+if($modx->hasPermission('edit_document')) {
 $rowTpl .= '<li><a target="main" href="index.php?a=27&id=[+parent+]"><i class="fa fa-pencil-square-o fa-fw"></i>  ' . $_lang["edit_resource"] . '</a></li>
-			<li><a target="main" href="index.php?a=4&pid=[+parent+]"><i class="fa fa-file-o fa-fw"></i>  ' . $_lang["create_resource_here"] . '</a></li> 
+			<li><a target="main" href="index.php?a=4&pid=[+parent+]"><i class="fa fa-file-o fa-fw"></i>  ' . $_lang["create_resource_here"] . '</a></li>
 			<li><a target="main" href="index.php?a=72&pid=[+parent+]"><i class="fa fa-link fa-fw"></i>  ' . $_lang["create_weblink_here"] . '</a></li>
 	        <li><a target="main" href="index.php?a=56&id=[+parent+]"><i class="fa fa-sort-numeric-asc fa-fw"></i>  ' . $_lang["sort_menuindex"] . '</a></li>';
 }
 $rowTpl .= '<li><a href="[(site_url)]index.php?id=[+parent+]" target="_blank" title="' . $_lang["preview_resource"] . '"><i class="fa fa-eye""></i>  '.$_lang["preview_resource"].'</a></li></td></ul></div>';
 }
-//TVs columns		
+//TVs columns
 $rowTpl .= $TvTDs;
-		
-//Status column	(hidden)	
+
+//Status column	(hidden)
 $rowTpl .= '
-<td aria-expanded="false" class="footable-toggle"> 
- [[if? &is=`[+deleted+]:=:1` &then=`' . $_LDlang["deleted"] . '` &else=`[[if? &is=`[+published+]:=:1` &then=`' . $_LDlang["published"] . '` &else=`' . $_LDlang["unpublished"] . '`]]`]] 
-</td>';	
+<td aria-expanded="false" class="footable-toggle">
+ [[if? &is=`[+deleted+]:=:1` &then=`' . $_LDlang["deleted"] . '` &else=`[[if? &is=`[+published+]:=:1` &then=`' . $_LDlang["published"] . '` &else=`' . $_LDlang["unpublished"] . '`]]`]]
+</td>';
 
 //DATE column
-if ($showDate == 'createdon') { 
+if ($showDate == 'createdon') {
 $rowTpl .= '<td style="white-space: nowrap;" class="footable-toggle text-nowrap">[+createdon:date=`' . $DLdate . '`+]</td>';
 $dateColHead = '<th data-type="date" data-format-string="'.$dateFormat.'" data-sorted="true" data-direction="DESC" style="width: 1%; text-align:right;">' . $_lang["page_data_created"] . '</th>';
 }
-else if ($showDate == 'publishedon') { 
+else if ($showDate == 'publishedon') {
 $rowTpl .= '<td style="white-space: nowrap;" class="footable-toggle text-nowrap">[+publishedon:date=`' . $DLdate . '`+]</td>';
 $dateColHead = '<th data-type="date" data-format-string="'.$dateFormat.'" data-sorted="true" data-direction="DESC" style="width: 1%; text-align:right;">' . $_lang["page_data_published"] . '</th>';
 }
-else if ($showDate == 'editedon') { 
+else if ($showDate == 'editedon') {
 $rowTpl .= '<td style="white-space: nowrap;" class="footable-toggle text-nowrap">[+editedon:date=`' . $DLdate . '`+]</td>';
 $dateColHead = '<th data-type="date" data-format-string="'.$dateFormat.'" data-sorted="true" data-direction="DESC" style="width: 1%; text-align:right;">' . $_lang["page_data_edited"] . '</th>';
 }
-else {}	
+else {}
 
 //USER column
-if ($showUser == 'createdby') { 
+if ($showUser == 'createdby') {
 $rowTpl .= '<td style="white-space: nowrap" class="footable-toggle text-nowrap">[+user.username.createdby+]</td>';
 $userColHead = '<th data-type="text">' . $_lang["user"] . '</th>';
 }
-else if ($showUser == 'publishedby') { 
+else if ($showUser == 'publishedby') {
 $rowTpl .= '<td style="white-space: nowrap" class="footable-toggle text-nowrap">[+user.username.publishedby+]</td>';
 $userColHead = '<th data-type="text">' . $_lang["user"] . '</th>';
 }
-else if ($showUser == 'editedby') { 
+else if ($showUser == 'editedby') {
 $rowTpl .= '<td style="white-space: nowrap" class="footable-toggle text-nowrap">[+user.username.editedby+]</td>';
 $userColHead = '<th data-type="text">' . $_lang["user"] . '</th>';
 }
-else {}	
-		
-$rowTpl .='<td style="text-align: right;" class="actions">';	
-//Action buttons 
-if($modx->hasPermission('edit_document')) {		
+else {}
+
+$rowTpl .='<td style="text-align: right;" class="actions">';
+//Action buttons
+if($modx->hasPermission('edit_document')) {
 if ($editInModal == yes) {
 $rowTpl .= '<a title="' . $_lang["edit_resource"] . '" style="cursor:pointer" href="" onClick="parent.modx.popup({url:\''. MODX_MANAGER_URL.'?a=27&id=[+id+]&tab=1\',title1:\'' . $_lang["edit_resource"] . '\',icon:\'fa-pencil-square-o\',iframe:\'iframe\',selector2:\'.tab-page>.container\',position:\'center center\',width:\'80%\',height:\'80%\',wrap:\'body\',hide:0,hover:0,overlay:1,overlayclose:1})"><i class="fa fa-external-link"></i></a>';
 }
 else {
 $rowTpl .= '<a target="main" href="index.php?a=27&id=[+id+]" title="' . $_lang["edit_resource"] . '"><i class="fa fa-pencil-square-o"></i></a>';
 }
-}		
+}
 $rowTpl .= '<a href="[(site_url)]index.php?id=[+id+]" target="_blank" title="' . $_lang["preview_resource"] . '"><i class="fa fa-eye"></i></a> ';
-if($modx->hasPermission('edit_document')) {	
-if ($showMoveButton == yes) { 
+if($modx->hasPermission('edit_document')) {
+if ($showMoveButton == yes) {
 $rowTpl .= '<a class="hidden-xs-down" target="main" href="index.php?a=51&id=[+id+]" title="' . $_lang["move_resource"] . '"><i class="fa fa-arrows"></i></a> ';
 }
 
-//Duplicate btn href="index.php?a=94&id=[+id+]" 
-if ($showDuplicateButton == yes) { 
+//Duplicate btn href="index.php?a=94&id=[+id+]"
+if ($showDuplicateButton == yes) {
 $rowTpl .= '<a class="btn-duplicate hidden-xs-down" target="main" href="index.php?a=94&id=[+id+]" title="' . $_lang["resource_duplicate"] . '"><i class="fa fa-clone"></i></a> ';
-}	
-//Publish btn	
-if ($showPublishButton == yes) { 
-$rowTpl .= '[[if? &is=`[+deleted+]:=:0` &then=`[[if? &is=`[+published+]:=:1` &then=` 
-<a class="btn-unpublish hidden-xs-down" target="main" href="index.php?a=62&id=[+id+]" title="' . $_lang["unpublish_resource"] . '"><i class="fa fa-arrow-down"></i></a>  
+}
+//Publish btn
+if ($showPublishButton == yes) {
+$rowTpl .= '[[if? &is=`[+deleted+]:=:0` &then=`[[if? &is=`[+published+]:=:1` &then=`
+<a class="btn-unpublish hidden-xs-down" target="main" href="index.php?a=62&id=[+id+]" title="' . $_lang["unpublish_resource"] . '"><i class="fa fa-arrow-down"></i></a>
 `&else=`
-<a class="btn-publish hidden-xs-down" target="main" href="index.php?a=61&id=[+id+]" title="' . $_lang["publish_resource"] . '"><i class="fa fa-arrow-up"></i></a>  
+<a class="btn-publish hidden-xs-down" target="main" href="index.php?a=61&id=[+id+]" title="' . $_lang["publish_resource"] . '"><i class="fa fa-arrow-up"></i></a>
 `]]
 `&else=`
-<span style="opacity:0;" class="hidden-xs-down text-muted" title="publish"><i class="fa fa-arrow-up"></i></span>  
+<span style="opacity:0;" class="hidden-xs-down text-muted" title="publish"><i class="fa fa-arrow-up"></i></span>
 `]]
 ';
 }
 }
 //add resource here btn
-if ($showAddHere == yes) { 
+if ($showAddHere == yes) {
 if ($editInModal == yes) {
 $rowTpl .= '<a class="hidden-xs-down" title="' . $_lang["create_resource_here"] . '" style="cursor:pointer" href="" onClick="parent.modx.popup({url:\''. MODX_MANAGER_URL.'?a=4&pid=[+id+]\',title1:\'' . $_lang["create_resource_here"] . '\',icon:\'fa-file-o\',iframe:\'iframe\',selector2:\'.tab-page>.container\',position:\'center center\',width:\'80%\',height:\'80%\',wrap:\'body\',hide:0,hover:0,overlay:1,overlayclose:1})"><i class="fa fa-file-o"></i></a>';
 }
@@ -626,20 +626,20 @@ $rowTpl .= '<a class="hidden-xs-down" target="main" href="index.php?a=4&pid=[+id
 }
 }
 //delete btn
-if ($showDeleteButton == yes) { 
+if ($showDeleteButton == yes) {
 if($modx->hasPermission('delete_document')) {
-$rowTpl .= '[[if? &is=`[+deleted+]:=:0` &then=` 
-<a class="btn-delete" href="index.php?a=6&id=[+id+]" target="main" onclick="return false;" title="' . $_lang["delete_resource"] . '""><i class="fa fa-trash"></i></a>  
+$rowTpl .= '[[if? &is=`[+deleted+]:=:0` &then=`
+<a class="btn-delete" href="index.php?a=6&id=[+id+]" target="main" onclick="return false;" title="' . $_lang["delete_resource"] . '""><i class="fa fa-trash"></i></a>
 `&else=`
-<a class="btn-undelete" target="main" href="index.php?a=63&id=[+id+]" title="' . $_lang["undelete_resource"] . '"><i class="fa fa-arrow-circle-o-up"></i></a>  
+<a class="btn-undelete" target="main" href="index.php?a=63&id=[+id+]" title="' . $_lang["undelete_resource"] . '"><i class="fa fa-arrow-circle-o-up"></i></a>
 `]]';
 }
 }
-//overview btn		
+//overview btn
 $rowTpl .= '<span class="footable-toggle" style="margin-left:-4px;" title="' . $_lang["resource_overview"] . '"><i class="footable-toggle fa fa-info"></i></span></td>
 
 <td class="resource-details">';
-//image tv			
+//image tv
 if ($ImageTv != '') {
 if ($ShowImageIn == overview) {
 $rowTpl .= '<div class="pull-left" style="margin-right:5px"><img class="img-responsive img-thumbnail" src="../[[phpthumb? &input=`[+'.$ImageTv.'+]` &options=`w=90,h=90,q=60,zc=C`]]" alt="[+title+]"> </div> ';
@@ -654,7 +654,7 @@ $rowTpl .= '
 </td>
 </tr>
 ';
-//headers		
+//headers
 if ($showParent == yes) {
 $parentColumnHeader = '
 <th data-type="text">' . $_lang["resource_parent"] . '</th> ';
@@ -709,12 +709,12 @@ $list = $modx->runSnippet('DocLister', $params);
 $output ='';
 
 $output .= ''.$jsOutput.'';
-					
+
 // onManagerMainFrameHeaderHTMLBlock
 $evtOut = $modx->invokeEvent('OnManagerMainFrameHeaderHTMLBlock');
 $onManagerMainFrameHeaderHTMLBlock = is_array($evtOut) ? implode("\n", $evtOut) : '';
 $output .= $onManagerMainFrameHeaderHTMLBlock;
-																	 
+
 $output .= '
 '.$cssOutput.'
 <style>
@@ -759,20 +759,20 @@ $output .= '
 							<th data-type="number" style="width: 1%">'.$_lang["id"].'</th>
 							'.$ImageTVHead.'
 							<th data-type="text">'.$_lang["resource_title"].'</th>
-							
-							'.$parentColumnHeader.'							
+
+							'.$parentColumnHeader.'
 							'.$TvColumnsHeaders.'
 							<th data-visible="false" data-name="status" data-filterable="true" data-type="text">'.$_lang["page_data_status"].'</th>
 							'.$dateColHead.'
-							'.$userColHead.'						
+							'.$userColHead.'
 							<th data-filterable="false" data-sortable="false" style="width: 1%; text-align:center;">'.$_lang["mgrlog_action"].'</th>
 							<th data-filterable="false" data-sortable="false" data-breakpoints="all"></th>
 						</tr>
 					</thead>                    <tbody>
-'.$list.' 
+'.$list.'
 </tbody></table>
 </div>';
-if ($showEmptyTrashButton == yes) { 
+if ($showEmptyTrashButton == yes) {
 if($modx->hasPermission('empty_trash')) {
 $output .= '
 <div id="purgeTrash" style="margin-top:10px;margin-right:30px;" class="pull-right">
