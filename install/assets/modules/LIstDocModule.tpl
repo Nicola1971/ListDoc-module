@@ -6,7 +6,6 @@
  * @category	module
  * @version     2.0.5.2
  * @author      Author: Nicola Lambathakis http://www.tattoocms.it/
- * @icon        fa fa-pencil
  * @internal	@modx_category Manager
  * @internal @installset base, sample
  * @lastupdate  30-12-2017
