@@ -4,12 +4,12 @@
  * Documents list/grid
  *
  * @category	module
- * @version     2.0.5.4
+ * @version     2.0.5.5
  * @author      Author: Nicola Lambathakis http://www.tattoocms.it/
  * @icon        fa fa-pencil
  * @internal	@modx_category Manager
  * @internal @installset base, sample
- * @lastupdate  13-11-2019
+ * @lastupdate  13-07-2020
  * @internal    @properties &modTitle=Module Title:;string;Documents List &modicon=Module title icon:;string;fa-pencil &ParentFolder=Parent folder for List documents:;string;0 &ListItems=Max items in List:;string;100 &dittolevel=Depht:;string;3 &hideFolders=Hide Folders:;menu;yes,no;no &showUnpublished=Show Deleted and Unpublished:;menu;yes,no;yes;;Show Deleted and Unpublished resources &showAddButtons=Show Create Resource Buttons:;menu;yes,no;no;;show header add buttons &showStatusFilter=Show Status Filter:;menu;yes,no;yes;;require Show Deleted and Unpublished YES &DisplayTitle=Display Title in title column:;menu;pagetitle,longtitle,menutitle;pagetitle;;choose which title display in title column &showParent=Show Parent Column:;menu;yes,no;yes &showUser=Show User Column:;menu;createdby,publishedby,editedby,no;createdby &showDate=Show Date Column:;menu;createdon,publishedon,editedon,no;editedon &dateFormat=Date Column Format:;menu;DD MM YYYY,MM DD YYYY,YYYY MM DD;DD MM YYYY &TvColumn=Tv Columns:;string;[+longtitle+],[+menuindex+] &TvSortType=Tv Column Sort type:;string;text,number &ImageTv=Show Image TV:;string;image;;enter image tv name &ShowImageIn=Show image Tv in:;menu;overview,column;overview &tablefields=Overview Tv Fields:;string;[+longtitle+],[+description+],[+introtext+],[+documentTags+] &tableheading=Overview TV headings:;string;Long Title,Description,Introtext,Tags &editInModal=Edit docs in modal:;menu;yes,no;no;;edit and create resources in evo modal window &showMoveButton=Show Move Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showAddHere=Show Create Resource here Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showDuplicateButton=Show Duplicate Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showPublishButton=Show Publish Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showDeleteButton=Show Delete Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showEmptyTrashButton=Show Empty Trash Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &confirmTheme=jquery confirm Theme:;menu;modern,light,dark,supervan,material,bootstrap;modern;;theme styles for confim alert windows
  * @license 	http://www.gnu.org/copyleft/gpl.html GNU Public License (GPL)
  * @documentation Requirements: This plugin requires Evolution 1.4 or later
@@ -17,7 +17,7 @@
  * @reportissues https://github.com/Nicola1971/ListDoc-module/issues
  */
 
- if(!defined('MODX_BASE_PATH')){die('What are you doing? Get out of here!');}
+if(!defined('MODX_BASE_PATH')){die('What are you doing? Get out of here!');}
 //lang
 // get global language
 global $modx,$_lang,$_style;
@@ -62,8 +62,8 @@ $jsOutput = '
 <script>
 ';
 
-if ($showUnpublished == yes) {
-if ($showStatusFilter == yes) {
+if ($showUnpublished == 'yes') {
+if ($showStatusFilter == 'yes') {
 $jsOutput .= 'FooTable.MyFiltering = FooTable.Filtering.extend({
 	construct: function(instance){
 		this._super(instance);
@@ -471,7 +471,7 @@ $tablefields = isset($tablefields) ? $tablefields : '[+longtitle+],[+description
 $tableheading = isset($tableheading) ? $tableheading : 'Long Title,Description,Introtext,Tags';
 
 //Header create resource in parent buttons
-if ($showAddButtons == yes) {
+if ($showAddButtons == 'yes') {
 	if($modx->hasPermission('edit_document')) {
 $Parents = explode(",","$ParentFolder");
 foreach ($Parents as $Parent){
@@ -481,7 +481,7 @@ foreach ($Parents as $Parent){
 	}
 	else {
 	$ParentTitle = "<i class=\"fa fa-sitemap\"></i> Root";}
-	if ($editInModal == yes) {
+	if ($editInModal == 'yes') {
 	$ParentsButtons .= '<a class="btn btn-sm btn-success" title="' . $_lang["create_resource_here"] . '" style="cursor:pointer" href="" onClick="parent.modx.popup({url:\''. MODX_MANAGER_URL.'?a=4&pid='.$Parent.'\',title1:\'' . $_lang["create_resource_here"] . '\',icon:\'fa-file-o\',iframe:\'iframe\',selector2:\'.tab-page>.container\',position:\'center center\',width:\'80%\',height:\'80%\',wrap:\'body\',hide:0,hover:0,overlay:1,overlayclose:1})">+ <i class="fa fa-file-o fa-fw"></i>  ' . $ParentTitle . '</a> ';
 	}
 	else {
@@ -533,7 +533,7 @@ $ImageTVHead = '<th width="100" data-type="html" data-breakpoints="xs" data-filt
 $rowTpl .= '<td class="footable-toggle"><a target="main" data-title="edit?" class="dataConfirm [[if? &is=`[+published+]:=:0` &then=`unpublished`]] [[if? &is=`[+deleted+]:=:1` &then=`deleted`]] [[if? &is=`[+hidemenu+]:is:1:and:[+published+]:is:1` &then=`notinmenu`]]" href="index.php?a=27&id=[+id+]" title="' . $_lang["edit_resource"] . '">[[if? &is=`[+'.$DisplayTitle.'+]:!empty` &then=`[+'.$DisplayTitle.'+]` &else=[+title+]`]]</a>[[if? &is=`[+type+]:is:reference` &then=` <i class="weblinkicon fa fa-link"></i>`]]</td> ';
 
 //Parent column	and context menu
-if ($showParent == yes) {
+if ($showParent == 'yes') {
 $rowTpl .= '
 <td aria-expanded="false" [[if? &is=`[+parent+]:not:0`&then=`oncontextmenu ="event.preventDefault();$(\'#[+id+]context-menu\').show();$(\'#context-menu\').offset({\'top\':mouseY,\'left\':mouseX})"`]]>
 [[if? &is=`[+parent+]:not:0`&then=`<a target="main" href="index.php?a=3&id=[+parent+]&tab=1" title="'.$_lang["view_child_resources_in_container"].'">[[DocInfo? &docid=`[+parent+]` &field=`pagetitle`]]</a>`]]
@@ -591,7 +591,7 @@ else {}
 $rowTpl .='<td style="text-align: right;" class="actions">';
 //Action buttons
 if($modx->hasPermission('edit_document')) {
-if ($editInModal == yes) {
+if ($editInModal == 'yes') {
 $rowTpl .= '<a title="' . $_lang["edit_resource"] . '" style="cursor:pointer" href="" onClick="parent.modx.popup({url:\''. MODX_MANAGER_URL.'?a=27&id=[+id+]&tab=1\',title1:\'' . $_lang["edit_resource"] . '\',icon:\'fa-pencil-square-o\',iframe:\'iframe\',selector2:\'.tab-page>.container\',position:\'center center\',width:\'80%\',height:\'80%\',wrap:\'body\',hide:0,hover:0,overlay:1,overlayclose:1})"><i class="fa fa-external-link"></i></a>';
 }
 else {
@@ -600,16 +600,16 @@ $rowTpl .= '<a target="main" href="index.php?a=27&id=[+id+]" title="' . $_lang["
 }
 $rowTpl .= '<a href="[(site_url)]index.php?id=[+id+]" target="_blank" title="' . $_lang["preview_resource"] . '"><i class="fa fa-eye"></i></a> ';
 if($modx->hasPermission('edit_document')) {
-if ($showMoveButton == yes) {
+if ($showMoveButton == 'yes') {
 $rowTpl .= '<a class="hidden-xs-down" target="main" href="index.php?a=51&id=[+id+]" title="' . $_lang["move_resource"] . '"><i class="fa fa-arrows"></i></a> ';
 }
 
 //Duplicate btn href="index.php?a=94&id=[+id+]"
-if ($showDuplicateButton == yes) {
+if ($showDuplicateButton == 'yes') {
 $rowTpl .= '<a class="btn-duplicate hidden-xs-down" target="main" href="index.php?a=94&id=[+id+]" title="' . $_lang["resource_duplicate"] . '"><i class="fa fa-clone"></i></a> ';
 }
 //Publish btn
-if ($showPublishButton == yes) {
+if ($showPublishButton == 'yes') {
 $rowTpl .= '[[if? &is=`[+deleted+]:=:0` &then=`[[if? &is=`[+published+]:=:1` &then=`
 <a class="btn-unpublish hidden-xs-down" target="main" href="index.php?a=62&id=[+id+]" title="' . $_lang["unpublish_resource"] . '"><i class="fa fa-arrow-down"></i></a>
 `&else=`
@@ -622,8 +622,8 @@ $rowTpl .= '[[if? &is=`[+deleted+]:=:0` &then=`[[if? &is=`[+published+]:=:1` &th
 }
 }
 //add resource here btn
-if ($showAddHere == yes) {
-if ($editInModal == yes) {
+if ($showAddHere == 'yes') {
+if ($editInModal == 'yes') {
 $rowTpl .= '<a class="hidden-xs-down" title="' . $_lang["create_resource_here"] . '" style="cursor:pointer" href="" onClick="parent.modx.popup({url:\''. MODX_MANAGER_URL.'?a=4&pid=[+id+]\',title1:\'' . $_lang["create_resource_here"] . '\',icon:\'fa-file-o\',iframe:\'iframe\',selector2:\'.tab-page>.container\',position:\'center center\',width:\'80%\',height:\'80%\',wrap:\'body\',hide:0,hover:0,overlay:1,overlayclose:1})"><i class="fa fa-file-o"></i></a>';
 }
 else {
@@ -631,7 +631,7 @@ $rowTpl .= '<a class="hidden-xs-down" target="main" href="index.php?a=4&pid=[+id
 }
 }
 //delete btn
-if ($showDeleteButton == yes) {
+if ($showDeleteButton == 'yes') {
 if($modx->hasPermission('delete_document')) {
 $rowTpl .= '[[if? &is=`[+deleted+]:=:0` &then=`
 <a class="btn-delete" href="index.php?a=6&id=[+id+]" target="main" onclick="return false;" title="' . $_lang["delete_resource"] . '""><i class="fa fa-trash"></i></a>
@@ -660,7 +660,7 @@ $rowTpl .= '
 </tr>
 ';
 //headers
-if ($showParent == yes) {
+if ($showParent == 'yes') {
 $parentColumnHeader = '
 <th data-type="text">' . $_lang["resource_parent"] . '</th> ';
 }
@@ -695,10 +695,10 @@ $params['tvPrefix'] = '';
 $params['tvList'] = $TvFields;
 $params['display'] = $ListItems;
 //filters
-if ($showUnpublished == yes) {
+if ($showUnpublished == 'yes') {
 $params['showNoPublish'] = '1';
 }
-if ($hideFolders == yes) {
+if ($hideFolders == 'yes') {
 $wherehideFolders = 'isfolder=0';
 $params['addWhereList'] = 'isfolder=0';
 }
@@ -777,7 +777,7 @@ $output .= '
 '.$list.'
 </tbody></table>
 </div>';
-if ($showEmptyTrashButton == yes) {
+if ($showEmptyTrashButton == 'yes') {
 if($modx->hasPermission('empty_trash')) {
 $output .= '
 <div id="purgeTrash" style="margin-top:10px;margin-right:30px;" class="pull-right">
