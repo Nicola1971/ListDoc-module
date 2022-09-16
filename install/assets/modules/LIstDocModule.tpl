@@ -4,12 +4,12 @@
  * Documents list/grid
  *
  * @category	module
- * @version     2.0.5.5
+ * @version     2.0.5.6
  * @author      Author: Nicola Lambathakis http://www.tattoocms.it/
  * @icon        fa fa-pencil
  * @internal	@modx_category Manager
  * @internal @installset base, sample
- * @lastupdate  13-07-2020
+ * @lastupdate  16-09-2022
  * @internal    @properties &modTitle=Module Title:;string;Documents List &modicon=Module title icon:;string;fa-pencil &ParentFolder=Parent folder for List documents:;string;0 &ListItems=Max items in List:;string;100 &dittolevel=Depht:;string;3 &hideFolders=Hide Folders:;menu;yes,no;no &showUnpublished=Show Deleted and Unpublished:;menu;yes,no;yes;;Show Deleted and Unpublished resources &showAddButtons=Show Create Resource Buttons:;menu;yes,no;no;;show header add buttons &showStatusFilter=Show Status Filter:;menu;yes,no;yes;;require Show Deleted and Unpublished YES &DisplayTitle=Display Title in title column:;menu;pagetitle,longtitle,menutitle;pagetitle;;choose which title display in title column &showParent=Show Parent Column:;menu;yes,no;yes &showUser=Show User Column:;menu;createdby,publishedby,editedby,no;createdby &showDate=Show Date Column:;menu;createdon,publishedon,editedon,no;editedon &dateFormat=Date Column Format:;menu;DD MM YYYY,MM DD YYYY,YYYY MM DD;DD MM YYYY &TvColumn=Tv Columns:;string;[+longtitle+],[+menuindex+] &TvSortType=Tv Column Sort type:;string;text,number &ImageTv=Show Image TV:;string;image;;enter image tv name &ShowImageIn=Show image Tv in:;menu;overview,column;overview &tablefields=Overview Tv Fields:;string;[+longtitle+],[+description+],[+introtext+],[+documentTags+] &tableheading=Overview TV headings:;string;Long Title,Description,Introtext,Tags &editInModal=Edit docs in modal:;menu;yes,no;no;;edit and create resources in evo modal window &showMoveButton=Show Move Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showAddHere=Show Create Resource here Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showDuplicateButton=Show Duplicate Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showPublishButton=Show Publish Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showDeleteButton=Show Delete Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &showEmptyTrashButton=Show Empty Trash Button:;menu;yes,no;yes;;hides the button to everyone, even if the user has permissions &confirmTheme=jquery confirm Theme:;menu;modern,light,dark,supervan,material,bootstrap;modern;;theme styles for confim alert windows
  * @license 	http://www.gnu.org/copyleft/gpl.html GNU Public License (GPL)
  * @documentation Requirements: This plugin requires Evolution 1.4 or later
@@ -461,7 +461,8 @@ else {
 $cssOutput = '
 <link type="text/css" rel="stylesheet" href="media/style/' . $modx->config['manager_theme'] . '/style.css">
 <link type="text/css" rel="stylesheet" href="../assets/modules/listdoc/css/footable.evo.min.css">
-<link type="text/css" rel="stylesheet" href="../assets/modules/listdoc/css/list.css">';
+<link type="text/css" rel="stylesheet" href="../assets/modules/listdoc/css/list.css">
+<link type="text/css" rel="stylesheet" href="../assets/modules/listdoc/css/jquery-confirm.min.css">';
 }
 
 //output
@@ -524,7 +525,7 @@ $rowTpl = '@CODE: <tr id="[+id+]">
 
 //Image column
 if ($ImageTv != '') {
-if ($ShowImageIn == column) {
+if ($ShowImageIn == 'column') {
 $rowTpl .= '<td aria-expanded="false" class="footable-toggle" ><img class="footable-toggle img-thumbnail-sm" src="../[[phpthumb? &input=`[+'.$ImageTv.'+]` &options=`w=70,h=70,q=60,zc=C`]]" alt="[+title+]"> </td> ';
 $ImageTVHead = '<th width="100" data-type="html" data-breakpoints="xs" data-filterable="false" data-sortable="false" style="text-align:center"><i class="icon-imagetv fa fa-2x fa-camera" aria-hidden="true"></i></th> ';
 }
@@ -646,8 +647,8 @@ $rowTpl .= '<span class="footable-toggle" style="margin-left:-4px;" title="' . $
 <td class="resource-details">';
 //image tv
 if ($ImageTv != '') {
-if ($ShowImageIn == overview) {
-$rowTpl .= '<div class="pull-left" style="margin-right:5px"><img class="img-responsive img-thumbnail" src="../[[phpthumb? &input=`[+'.$ImageTv.'+]` &options=`w=90,h=90,q=60,zc=C`]]" alt="[+title+]"> </div> ';
+if ($ShowImageIn == 'overview') {
+$rowTpl .= '<div class="float-left" style="margin-right:5px"><img class="img-responsive img-thumbnail" src="../[[phpthumb? &input=`[+'.$ImageTv.'+]` &options=`w=90,h=90,q=60,zc=C`]]" alt="[+title+]"> </div> ';
 }
 }
 $rowTpl .= '
@@ -780,7 +781,7 @@ $output .= '
 if ($showEmptyTrashButton == 'yes') {
 if($modx->hasPermission('empty_trash')) {
 $output .= '
-<div id="purgeTrash" style="margin-top:10px;margin-right:30px;" class="pull-right">
+<div id="purgeTrash" style="margin-top:10px;margin-right:30px;" class="float-right">
 <a id="emptyTrash" class="btn btn-md btn-emptytrash btn-secondary disabled" data-title="' . $_lang["empty_recycle_bin"] . '?" href="index.php?a=64" title="' . $_lang["empty_recycle_bin"] . '">'.$_style['empty_recycle_bin_empty'].'</a>
 ';
 }
